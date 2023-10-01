@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use((req, res) => {
-  res.status(404).jsom({ message: "Not found" });
+  res.status(404).json({ message: "Not found" });
 });
 
 app.use((err, req, res, next) => {
