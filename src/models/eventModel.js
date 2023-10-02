@@ -40,6 +40,12 @@ module.exports = function (sequelize, eventAddressModel) {
     },
     {
       timestamps: false,
+      indexes: [
+        {
+          unique: true,
+          fields: ["date_time", "event_address_id", "locale"],
+        },
+      ],
     }
   );
 };

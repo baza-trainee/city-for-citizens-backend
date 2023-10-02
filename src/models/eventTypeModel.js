@@ -20,6 +20,12 @@ module.exports = function (sequelize) {
     },
     {
       timestamps: false,
+      indexes: [
+        {
+          unique: true,
+          fields: ["event_type", "locale"],
+        },
+      ],
     }
   );
 };
