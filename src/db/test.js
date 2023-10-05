@@ -1,11 +1,11 @@
-console.info("Test start");
+console.info("Test reading events start");
 
-const db = require("../db");
+const db = require("../models");
 
 async function t02() {
-  const result = await db.eventTypeModel.findAll();
+  const result = await db.Events.findAll();
   result.forEach((element) => {
-    console.log(element.event_type);
+    console.log(element.id, element.event_title);
   });
 }
 

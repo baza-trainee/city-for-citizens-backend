@@ -1,28 +1,35 @@
-const Sequelize = require("sequelize");
+// const Sequelize = require("sequelize");
 
-const dbName = process.env.DB_NAME || "city_for_citizens";
-const dbUser = process.env.DB_USER || "root";
-const dbPassword = process.env.DB_PASSWORD || "12345678";
-const dbHost = process.env.DB_HOST || "localhost";
+// const dbName = process.env.DB_NAME || "city_for_citizens";
+// const dbUser = process.env.DB_USER || "root";
+// const dbPassword = process.env.DB_PASSWORD || "12345678";
+// const dbHost = process.env.DB_HOST || "localhost";
 
-const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-  dialect: "mysql",
-  host: dbHost,
-  logging: false,
-});
+// const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+//   dialect: "mysql",
+//   host: dbHost,
+//   logging: false,
+// });
 
-const eventAddressModel = require("../models/eventAddressModel")(sequelize);
-const eventModel = require("../models/eventModel")(
-  sequelize,
-  eventAddressModel
-);
-const eventTypeModel = require("../models/eventTypeModel")(sequelize);
-const eventTypeRelationshipModel =
-  require("../models/eventTypeRelationshipModel")(sequelize);
+const {
+  EventAddress,
+  EventTypes,
+  Events,
+  EventTypeRelationships,
+} = require("../models");
 
-eventAddressModel.sync({ force: false });
-eventModel.sync({ force: false });
-eventTypeModel.sync({ force: false });
-eventTypeRelationshipModel.sync({ force: false });
+async function createTables() {
+  console.info("Starting to create tables... Wait...");
+  await EventAddress.sync({ force: false });
+  await EventTypes.sync({ force: false });
+  await Events.sync({ force: false });
+  await EventTypeRelationships.sync({ force: false });
+}
 
-console.info("Tables in DB successfully created!");
+createTables()
+  .then(() => {
+    console.log("All tables have been created.");
+  })
+  .catch((error) => {
+    console.error("Error creating tables:", error);
+  });

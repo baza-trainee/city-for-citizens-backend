@@ -2,18 +2,35 @@ require("dotenv").config();
 
 const mysql = require("mysql2/promise");
 
-const dbName = process.env.DB_NAME || "city_for_citizens";
+const dbName = process.env.DB_NAME;
 
-mysql
-  .createConnection({
-    host: process.env.DB_HOST || "localhost",
-    port: process.env.DB_PORT || "3306",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "12345678",
-  })
-  .then((connection) => {
-    connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName};`).then((res) => {
-      console.info("Database successfully created!");
-      process.exit(0);
+(async () => {
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
     });
-  });
+
+    console.info("Checking if the database exists...");
+
+    const [results] = await connection.query(
+      `SHOW DATABASES LIKE '${dbName}';`
+    );
+
+    if (results.length === 0) {
+      // Если база данных не существует, создаем ее
+      await connection.query(`CREATE DATABASE ${dbName};`);
+      console.info(`Database "${dbName}" successfully created!`);
+    } else {
+      // Если база данных существует, выводим сообщение об этом
+      console.info(`Database "${dbName}" already exists.`);
+    }
+
+    process.exit(0);
+  } catch (error) {
+    console.error("Error:", error.message);
+    process.exit(1);
+  }
+})();

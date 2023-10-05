@@ -1,26 +1,24 @@
-require("dotenv").config();
+// require("dotenv").config();
 
-const Sequelize = require("sequelize");
+// const Sequelize = require("sequelize");
 
-const dbName = process.env.DB_NAME || "city_for_citizens";
-const dbUser = process.env.DB_USER || "root";
-const dbPassword = process.env.DB_PASSWORD || "12345678";
-const dbHost = process.env.DB_HOST || "localhost";
+// const dbName = process.env.DB_NAME || "city_for_citizens";
+// const dbUser = process.env.DB_USER || "root";
+// const dbPassword = process.env.DB_PASSWORD || "12345678";
+// const dbHost = process.env.DB_HOST || "localhost";
 
-const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-  dialect: "mysql",
-  host: dbHost,
-  logging: false,
-});
+// const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+//   dialect: "mysql",
+//   host: dbHost,
+//   logging: false,
+// });
 
-const eventTypeModel = require("../models/eventTypeModel")(sequelize);
-const eventAddressModel = require("../models/eventAddressModel")(sequelize);
-const eventModel = require("../models/eventModel")(
-  sequelize,
-  eventAddressModel
-);
-const eventTypeRelationshipModel =
-  require("../models/eventTypeRelationshipModel")(sequelize);
+const {
+  EventAddress,
+  EventTypes,
+  Events,
+  EventTypeRelationships,
+} = require("../models");
 
 const eventTypes = [
   {
@@ -201,27 +199,29 @@ const events = [
 
 const eventTypeRelationships = [
   {
-    event_id: 1,
-    event_type_id: 1,
+    eventId: 1,
+    eventTypeId: 1,
   },
   {
-    event_id: 2,
-    event_type_id: 1,
+    eventId: 2,
+    eventTypeId: 1,
   },
   {
-    event_id: 3,
-    event_type_id: 7,
+    eventId: 3,
+    eventTypeId: 7,
   },
   {
-    event_id: 4,
-    event_type_id: 7,
+    eventId: 4,
+    eventTypeId: 7,
   },
 ];
 
 async function insertData() {
-  await eventTypeModel.bulkCreate(eventTypes);
-  await eventAddressModel.bulkCreate(eventAddresses);
-  await eventModel.bulkCreate(events);
-  await eventTypeRelationshipModel.bulkCreate(eventTypeRelationships);
+  console.info("Starting to upload to DB... Wait...");
+  await EventTypes.bulkCreate(eventTypes);
+  await EventAddress.bulkCreate(eventAddresses);
+  await Events.bulkCreate(events);
+  await EventTypeRelationships.bulkCreate(eventTypeRelationships);
+  console.info("Upload to DB successfully done!");
 }
 insertData();
