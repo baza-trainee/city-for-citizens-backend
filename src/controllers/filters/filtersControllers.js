@@ -1,5 +1,6 @@
 const catchAsync = require("../../helpers/catchAsync");
 const db = require("../../models");
+const utcDateToYMD = require("../../helpers/utcDateToYMD");
 
 const getFiltersController = catchAsync(async (req, res) => {
   const { query } = req;
@@ -26,7 +27,10 @@ const getFiltersController = catchAsync(async (req, res) => {
       locale: query.locale,
     },
   });
-  const eventDates = [...new Set(EventDatesAll.map((item) => item.date_time))];
+
+  const eventDates = [
+    ...new Set(EventDatesAll.map((item) => utcDateToYMD(item.date_time))),
+  ];
 
   res.json({ eventCities, eventDates, eventTypes });
 });

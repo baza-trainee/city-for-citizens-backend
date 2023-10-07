@@ -10,6 +10,8 @@ const dbHost = process.env.DB_HOST;
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   dialect: "mysql",
   host: dbHost,
+  useUTC: false, // for reading from database
+  timezone: "+02:00", // for writing to database
   logging: false,
 });
 
@@ -18,6 +20,7 @@ const { EventAddress, EventTypes, Events, EventTypeRelationships } =
 
 Events.belongsToMany(EventTypes, { through: EventTypeRelationships });
 EventTypes.belongsToMany(Events, { through: EventTypeRelationships });
+Events.belongsTo(EventAddress, { foreignKey: "event_address_id" });
 
 module.exports = {
   sequelize,
