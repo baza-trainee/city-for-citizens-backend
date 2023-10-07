@@ -1,18 +1,3 @@
-// require("dotenv").config();
-
-// const Sequelize = require("sequelize");
-
-// const dbName = process.env.DB_NAME || "city_for_citizens";
-// const dbUser = process.env.DB_USER || "root";
-// const dbPassword = process.env.DB_PASSWORD || "12345678";
-// const dbHost = process.env.DB_HOST || "localhost";
-
-// const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-//   dialect: "mysql",
-//   host: dbHost,
-//   logging: false,
-// });
-
 const {
   EventAddress,
   EventTypes,
@@ -181,7 +166,7 @@ const events = [
       "Usually held from mid-April to mid-May, depending on the weather. In addition to tulips, atmospheric thematic installations on various themes are usually added, with a new theme every year.",
     event_url: "https://www.facebook.com/spivochepole",
     event_image: "",
-    event_address_id: 1,
+    event_address_id: 3,
     locale: "en_US",
   },
   {
@@ -192,7 +177,7 @@ const events = [
     event_url:
       "https://api.blink.so/events/share/3f0168da-05d0-40e9-8ef0-14cbf510848d?locale=en",
     event_image: "",
-    event_address_id: 2,
+    event_address_id: 4,
     locale: "en_US",
   },
 ];
@@ -204,15 +189,15 @@ const eventTypeRelationships = [
   },
   {
     eventId: 2,
-    eventTypeId: 1,
+    eventTypeId: 4,
   },
   {
     eventId: 3,
-    eventTypeId: 7,
+    eventTypeId: 13,
   },
   {
     eventId: 4,
-    eventTypeId: 7,
+    eventTypeId: 16,
   },
 ];
 

@@ -3,6 +3,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const filtersRouter = require("./routes/api/filtersRouters");
+const eventsRouter = require("./routes/api/eventsRouters");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/filters", filtersRouter);
+app.use("/api/events", eventsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
