@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "2.0.2",
+    "title": "Swagger City for citizens",
+    "description": "Showing off City for citizens work",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "http://localhost:3000" }],
+  "tags": [
+    {
+      "name": "Filters",
+      "description": "Filters endpoints"
+    },
+    {
+      "name": "Events",
+      "description": "Events endpoints"
+    }
+  ],
+
+  "paths": {
+    "/api/filters": {
+      "get": {
+        "summary": "Filters",
+        "tags": ["Filters"],
+        "description": "Filters",
+        "parameters": [],
+        "requestBody": {
+          "description": "Filters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FiltersRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Filters get successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FiltersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/events": {
+      "post": {
+        "summary": "Events",
+        "tags": ["Events"],
+        "description": "Events",
+        "parameters": [],
+        "requestBody": {
+          "description": "Events",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event create successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Events",
+        "tags": ["Events"],
+        "description": "Events",
+        "parameters": [],
+        "requestBody": {
+          "description": "Events",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Events get successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "components": {
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas": {
+        "FiltersRequest": {
+          "type": "object",
+          "required": [],
+          "properties": {}
+        },
+        "FiltersResponse": {
+          "type": "object",
+          "properties": {}
+        },
+        "EventsRequest": {
+          "type": "object",
+          "required": [],
+          "properties": {}
+        },
+        "EventsResponse": {
+          "type": "object",
+          "properties": {}
+        },
+        "EventCreateRequest": {
+          "type": "object",
+          "properties": {}
+        },
+        "EventCreateResponse": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  }
+}
