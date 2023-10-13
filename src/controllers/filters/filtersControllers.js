@@ -1,38 +1,23 @@
 const catchAsync = require("../../helpers/catchAsync");
 const db = require("../../models");
-const utcDateToYMD = require("../../helpers/utcDateToYMD");
+const { getEventsQuery } = require("../../services/getEventsQuery");
+const {
+  databaseDataForFilters,
+} = require("../../services/databaseDataForFilters");
 
 const getFiltersController = catchAsync(async (req, res) => {
   const { query } = req;
+  const tableAttributes = {
+    eventsAttributes: ["date_time"],
+    eventAddressAttributes: ["city"],
+    eventTypesAttributes: ["event_type"],
+  };
 
-  const eventTypesAll = await db.EventTypes.findAll({
-    attributes: ["event_type"],
-    where: {
-      locale: query.locale,
-    },
-  });
-  const eventTypes = [...new Set(eventTypesAll.map((item) => item.event_type))];
+  const eventsQuery = getEventsQuery(query, tableAttributes);
 
-  const EventCitiesAll = await db.EventAddress.findAll({
-    attributes: ["city"],
-    where: {
-      locale: query.locale,
-    },
-  });
-  const eventCities = [...new Set(EventCitiesAll.map((item) => item.city))];
+  const events = databaseDataForFilters(await db.Events.findAll(eventsQuery));
 
-  const EventDatesAll = await db.Events.findAll({
-    attributes: ["date_time"],
-    where: {
-      locale: query.locale,
-    },
-  });
-
-  const eventDates = [
-    ...new Set(EventDatesAll.map((item) => utcDateToYMD(item.date_time))),
-  ];
-
-  res.json({ eventCities, eventDates, eventTypes });
+  res.status(200).json(events);
 });
 
 module.exports = {
