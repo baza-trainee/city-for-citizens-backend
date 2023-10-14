@@ -6,12 +6,15 @@ const getEventsQuery = (query, tableAttributes = {}) => {
   const citiesQuery = query.city ? query.city.split(",") : [];
   const dates = query.date ? query.date.split(",") : [];
   const dateQuery = dates.map((dateString) => {
-    return literal(`DATE(date_time) = DATE('${dateString}')`);
+    return literal(
+      `DATE(date_time) = DATE('${dateString}')`,
+      db.Sequelize.DATE
+    );
   });
   const eventTypesQuery = query.eventType ? query.eventType.split(",") : [];
 
   return {
-    attributes: tableAttributes.eventsAttributes || [],
+    attributes: tableAttributes.eventsAttributes || null,
     where: {
       ...(localeQuery && {
         locale: localeQuery,
@@ -25,7 +28,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
     include: [
       {
         model: db.EventAddress,
-        attributes: tableAttributes.eventAddressAttributes || [],
+        attributes: tableAttributes.eventAddressAttributes || null,
         ...(citiesQuery.length > 0 && {
           where: {
             ...(localeQuery && {
@@ -43,7 +46,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
           model: db.EventTypeRelationships,
           attributes: [],
         },
-        attributes: tableAttributes.eventTypesAttributes || [],
+        attributes: tableAttributes.eventTypesAttributes || null,
         ...(eventTypesQuery.length > 0 && {
           where: {
             ...(localeQuery && {
