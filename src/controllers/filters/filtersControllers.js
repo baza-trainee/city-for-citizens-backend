@@ -35,6 +35,4 @@ const getFiltersController = catchAsync(async (req, res) => {
   res.json({ eventCities, eventDates, eventTypes });
 });
 
-module.exports = {
-  getFiltersController,
-};
+module.exports = getFiltersController;
