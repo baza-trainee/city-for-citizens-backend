@@ -1,6 +1,6 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
 const dbName = process.env.DB_NAME;
 const dbUser = process.env.DB_USER;
@@ -8,19 +8,19 @@ const dbPassword = process.env.DB_PASSWORD;
 const dbHost = process.env.DB_HOST;
 
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-  dialect: "mysql",
+  dialect: 'mysql',
   host: dbHost,
   useUTC: false, // for reading from database
-  timezone: "+02:00", // for writing to database
+  timezone: '+02:00', // for writing to database
   logging: false,
 });
 
 const { EventAddress, EventTypes, Events, EventTypeRelationships } =
-  require("./eventsModels")(sequelize, Sequelize);
+  require('./eventsModels')(sequelize, Sequelize);
 
 Events.belongsToMany(EventTypes, { through: EventTypeRelationships });
 EventTypes.belongsToMany(Events, { through: EventTypeRelationships });
-Events.belongsTo(EventAddress, { foreignKey: "event_address_id" });
+Events.belongsTo(EventAddress, { foreignKey: 'eventAddressId' });
 
 module.exports = {
   sequelize,

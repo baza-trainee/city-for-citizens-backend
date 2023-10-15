@@ -1,27 +1,27 @@
-const db = require("../models");
+const db = require('../models');
 
-const createEvent = async (requestData) => {
+const createEvent = async (requestData, imageFilePath) => {
+  const eventImage = imageFilePath;
   const {
     locale,
-    event_title,
+    eventTitle,
     date,
     time,
     description,
-    event_url,
-    event_image,
+    eventUrl,
     city,
     street,
     notes,
     coordinates,
-    event_type,
+    eventType,
   } = requestData;
 
-  const eventTypesArray = event_type.split(",");
+  const eventTypesArray = eventType.split(',');
   const existingEventTypes = await Promise.all(
-    eventTypesArray.map(async (eventTypeName) => {
+    eventTypesArray.map(async eventTypeName => {
       const existingEventType = await db.EventTypes.findOne({
         where: {
-          event_type: eventTypeName,
+          eventType: eventTypeName,
           locale,
         },
       });
@@ -30,7 +30,7 @@ const createEvent = async (requestData) => {
         return existingEventType;
       } else {
         return db.EventTypes.create({
-          event_type: eventTypeName,
+          eventType: eventTypeName,
           locale,
         });
       }
@@ -49,18 +49,18 @@ const createEvent = async (requestData) => {
 
   const eventData = {
     locale,
-    event_title,
-    date_time: new Date(`${date} ${time}`),
+    eventTitle,
+    dateTime: new Date(`${date} ${time}`),
     description,
-    event_url,
-    event_image,
-    event_address_id: eventAddressId,
+    eventUrl,
+    eventImage,
+    eventAddressId: eventAddressId,
   };
 
   const newEvent = await db.Events.create(eventData);
 
   await Promise.all(
-    existingEventTypes.map(async (eventType) => {
+    existingEventTypes.map(async eventType => {
       await db.EventTypeRelationships.create({
         eventTypeId: eventType.id,
         eventId: newEvent.id,
