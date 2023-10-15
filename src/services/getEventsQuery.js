@@ -1,17 +1,17 @@
-const { Op, literal } = require("sequelize");
-const db = require("../models");
+const { Op, literal } = require('sequelize');
+const db = require('../models');
 
 const getEventsQuery = (query, tableAttributes = {}) => {
   const localeQuery = query.locale;
-  const citiesQuery = query.city ? query.city.split(",") : [];
-  const dates = query.date ? query.date.split(",") : [];
-  const dateQuery = dates.map((dateString) => {
+  const citiesQuery = query.city ? query.city.split(',') : [];
+  const dates = query.date ? query.date.split(',') : [];
+  const dateQuery = dates.map(dateString => {
     return literal(
       `DATE(date_time) = DATE('${dateString}')`,
       db.Sequelize.DATE
     );
   });
-  const eventTypesQuery = query.eventType ? query.eventType.split(",") : [];
+  const eventTypesQuery = query.eventType ? query.eventType.split(',') : [];
 
   return {
     attributes: tableAttributes.eventsAttributes || null,
@@ -52,7 +52,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
             ...(localeQuery && {
               locale: localeQuery,
             }),
-            event_type: {
+            eventType: {
               [Op.in]: eventTypesQuery,
             },
           },

@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const EventTypeRelationships = sequelize.define(
-    "event_type_relationships",
+    'eventType_relationships',
     {},
     {
       timestamps: false,
@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
   );
 
   const EventAddress = sequelize.define(
-    "event_address",
+    'event_address',
     {
       id: {
         type: Sequelize.INTEGER,
@@ -40,14 +40,14 @@ module.exports = (sequelize, Sequelize) => {
   );
 
   const EventTypes = sequelize.define(
-    "event_types",
+    'eventTypes',
     {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      event_type: {
+      eventType: {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
@@ -61,21 +61,21 @@ module.exports = (sequelize, Sequelize) => {
       indexes: [
         {
           unique: true,
-          fields: ["event_type", "locale"],
+          fields: ['eventType', 'locale'],
         },
       ],
     }
   );
 
   const Events = sequelize.define(
-    "events",
+    'events',
     {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      event_title: {
+      eventTitle: {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
@@ -86,10 +86,10 @@ module.exports = (sequelize, Sequelize) => {
       description: {
         type: Sequelize.TEXT,
       },
-      event_url: {
+      eventUrl: {
         type: Sequelize.STRING(255),
       },
-      event_image: {
+      eventImage: {
         type: Sequelize.STRING(255),
       },
       event_address_id: {
@@ -97,7 +97,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         references: {
           model: EventAddress,
-          key: "id",
+          key: 'id',
         },
       },
       locale: {
@@ -110,12 +110,11 @@ module.exports = (sequelize, Sequelize) => {
       indexes: [
         {
           unique: true,
-          fields: ["date_time", "event_address_id", "locale"],
+          fields: ['date_time', 'event_address_id', 'locale'],
         },
       ],
     }
   );
-
 
   return { EventAddress, EventTypes, Events, EventTypeRelationships };
 };
