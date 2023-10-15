@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://7l55nnhl-4000.euw.devtunnels.ms" }],
   "tags": [
     {
       "name": "Filters",
@@ -31,13 +31,6 @@
         "description": "Filters",
         "parameters": [
           {
-            "name": "date_time",
-            "in": "query",
-            "type": "string",
-            "description": "Event date, time",
-            "example": "2023-08-25"
-          },
-          {
             "name": "city",
             "in": "query",
             "type": "string",
@@ -45,17 +38,56 @@
             "example": "Kyiv"
           },
           {
+            "name": "date_time",
+            "in": "query",
+            "type": "string",
+            "description": "Event date, time",
+            "example": "2023-08-25"
+          },
+          {
             "name": "event_type",
             "in": "query",
             "type": "string",
-            "description": "Event city",
+            "description": "Event type",
             "example": "Music Event"
           }
         ],
         "responses": {
           "200": {
             "description": "Successful operation",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eventCities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Event city",
+                        "example": "Kyiv"
+                      }
+                    },
+                    "eventDates": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Event date",
+                        "example": "2023-04-15"
+                      }
+                    },
+                    "eventTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Event type",
+                        "example": "Flower Festival"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad request",
@@ -80,9 +112,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/definitions/EventCreateRequest"
-              }
+              "schema": {}
             }
           }
         },
@@ -91,9 +121,7 @@
             "description": "Event created successful",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/definitions/EventCreateResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -113,24 +141,116 @@
         "tags": ["Events"],
         "description": "Events",
         "parameters": [],
-        "requestBody": {
-          "description": "Events",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/EventsRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/definitions/EventsResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "description": "Event id",
+                        "example": 1
+                      },
+                      "event_title": {
+                        "type": "string",
+                        "description": "Event title",
+                        "example": "Виставка квітів \"Тюльпани на Співочому полі\""
+                      },
+                      "date_time": {
+                        "type": "string",
+                        "description": "Event date, time",
+                        "example": "2023-04-15T06:30:45.000Z"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Event description",
+                        "example": "Проводиться приблизно з середини квітня по середину травня, в залежності від погоди. Окрім тюльпанів зазвичай додаються атмосферні тематичні інсталяції по темі, тема щороку нова."
+                      },
+                      "event_url": {
+                        "type": "string",
+                        "description": "Event url",
+                        "example": "https://www.facebook.com/spivochepole"
+                      },
+                      "event_image": {
+                        "type": "string",
+                        "description": "Event image",
+                        "example": ""
+                      },
+                      "event_address_id": {
+                        "type": "number",
+                        "description": "Event address id",
+                        "example": 1
+                      },
+                      "locale": {
+                        "type": "string",
+                        "description": "Event locale",
+                        "example": "uk_UA"
+                      },
+                      "event_address": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "Event address id",
+                            "example": 1
+                          },
+                          "city": {
+                            "type": "string",
+                            "description": "Event city",
+                            "example": "Київ"
+                          },
+                          "street": {
+                            "type": "string",
+                            "description": "Event street",
+                            "example": "вул. Лаврська, 31"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "description": "Event notes",
+                            "example": "Співоче поле розташоване на Печерських пагорбах на правому березі річки Дніпро, біля музею-монументу Батьківщина-мати."
+                          },
+                          "coordinates": {
+                            "type": "string",
+                            "description": "Event coordinates",
+                            "example": "50.4302484,30.4936464"
+                          },
+                          "locale": {
+                            "type": "string",
+                            "description": "Event locale",
+                            "example": "uk_UA"
+                          }
+                        }
+                      },
+                      "event_types": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "description": "Event id",
+                              "example": 1
+                            },
+                            "event_type": {
+                              "type": "string",
+                              "description": "Event type",
+                              "example": "Квітковий фестиваль"
+                            },
+                            "locale": {
+                              "type": "string",
+                              "description": "Event locale",
+                              "example": "uk_UA"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -144,46 +264,6 @@
             "content": {}
           }
         }
-      }
-    },
-
-    "definitions": {      
-      "FiltersResponse": {
-        "type": "object",
-        "properties": {
-          "date_time": {
-            "type": "string",
-            "description": "Event date, time",
-            "example": "2023-08-25"
-          },
-          "city": {
-            "type": "string",
-            "description": "Event city",
-            "example": "Kyiv"
-          },
-          "event_type": {
-            "type": "string",
-            "description": "Event city",
-            "example": "Music Event"
-          }
-        }
-      },
-      "EventsRequest": {
-        "type": "object",
-        "required": [],
-        "properties": {}
-      },
-      "EventsResponse": {
-        "type": "object",
-        "properties": {}
-      },
-      "EventCreateRequest": {
-        "type": "object",
-        "properties": {}
-      },
-      "EventCreateResponse": {
-        "type": "object",
-        "properties": {}
       }
     }
   }
