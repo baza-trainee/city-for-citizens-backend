@@ -8,9 +8,9 @@ const {
 const getFiltersController = catchAsync(async (req, res) => {
   const { query } = req;
   const tableAttributes = {
-    eventsAttributes: ['date_time'],
+    eventsAttributes: ['dateTime'],
     eventAddressAttributes: ['city'],
-    eventTypesAttributes: ['event_type'],
+    eventTypesAttributes: ['eventType'],
   };
 
   const eventsQuery = getEventsQuery(query, tableAttributes);
