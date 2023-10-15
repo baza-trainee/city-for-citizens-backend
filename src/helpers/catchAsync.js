@@ -1,7 +1,16 @@
-/**
- * Express request handler wrapper.
- * Catch errors.
- */
-module.exports = (fn) => (req, res, next) => {
-  fn(req, res, next).catch((err) => next(err));
+// Express request handler wrapper.
+// Catch errors. 
+
+const ctrlWrapper = (ctrl) => {
+  const func = async (req, res, next) => {
+    try {
+      await ctrl(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  return func;
 };
+
+module.exports = ctrlWrapper;

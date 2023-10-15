@@ -1,4 +1,4 @@
-function utcDateToYMD(utcDateStr) {
+const utcDateToYMD = (utcDateStr) => {
   const utcDate = new Date(utcDateStr);
 
   const year = utcDate.getFullYear();
