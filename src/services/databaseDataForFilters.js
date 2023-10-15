@@ -6,8 +6,8 @@ const databaseDataForFilters = events => {
   const eventTypes = [];
 
   events.forEach(event => {
-    eventCities.push(event.event_address.city);
-    eventDates.push(utcDateToYMD(event.date_time));
+    eventCities.push(event.eventAddress.city);
+    eventDates.push(utcDateToYMD(event.dateTime));
     eventTypes.push(event.eventTypes[0].eventType);
   });
 

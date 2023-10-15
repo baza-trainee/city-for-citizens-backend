@@ -6,10 +6,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
   const citiesQuery = query.city ? query.city.split(',') : [];
   const dates = query.date ? query.date.split(',') : [];
   const dateQuery = dates.map(dateString => {
-    return literal(
-      `DATE(date_time) = DATE('${dateString}')`,
-      db.Sequelize.DATE
-    );
+    return literal(`DATE(dateTime) = DATE('${dateString}')`, db.Sequelize.DATE);
   });
   const eventTypesQuery = query.eventType ? query.eventType.split(',') : [];
 
@@ -20,7 +17,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
         locale: localeQuery,
       }),
       ...(dateQuery.length > 0 && {
-        date_time: {
+        dateTime: {
           [Op.or]: dateQuery,
         },
       }),

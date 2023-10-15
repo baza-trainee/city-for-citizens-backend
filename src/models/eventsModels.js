@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const EventTypeRelationships = sequelize.define(
-    'eventType_relationships',
+    'eventTypeRelationships',
     {},
     {
       timestamps: false,
@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
   );
 
   const EventAddress = sequelize.define(
-    'event_address',
+    'eventAddress',
     {
       id: {
         type: Sequelize.INTEGER,
@@ -79,7 +79,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(255),
         allowNull: false,
       },
-      date_time: {
+      dateTime: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -92,7 +92,7 @@ module.exports = (sequelize, Sequelize) => {
       eventImage: {
         type: Sequelize.STRING(255),
       },
-      event_address_id: {
+      eventAddressId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -110,7 +110,7 @@ module.exports = (sequelize, Sequelize) => {
       indexes: [
         {
           unique: true,
-          fields: ['date_time', 'event_address_id', 'locale'],
+          fields: ['dateTime', 'eventAddressId', 'locale'],
         },
       ],
     }

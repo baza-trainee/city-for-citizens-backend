@@ -50,11 +50,11 @@ const createEvent = async (requestData, imageFilePath) => {
   const eventData = {
     locale,
     eventTitle,
-    date_time: new Date(`${date} ${time}`),
+    dateTime: new Date(`${date} ${time}`),
     description,
     eventUrl,
     eventImage,
-    event_address_id: eventAddressId,
+    eventAddressId: eventAddressId,
   };
 
   const newEvent = await db.Events.create(eventData);

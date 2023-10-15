@@ -140,44 +140,44 @@ const eventAddresses = [
 const events = [
   {
     eventTitle: 'Виставка квітів "Тюльпани на Співочому полі"',
-    date_time: '2023-04-15 09:30:45',
+    dateTime: '2023-04-15 09:30:45',
     description:
       'Проводиться приблизно з середини квітня по середину травня, в залежності від погоди. Окрім тюльпанів зазвичай додаються атмосферні тематичні інсталяції по темі, тема щороку нова.',
     eventUrl: 'https://www.facebook.com/spivochepole',
     eventImage: '',
-    event_address_id: 1,
+    eventAddressId: 1,
     locale: 'uk_UA',
   },
   {
     eventTitle: 'Ticket to the SUN 2023',
-    date_time: '2023-08-25 13:00:00',
+    dateTime: '2023-08-25 13:00:00',
     description:
       '3 дні, 5 локацій, купа майстер-класів, еко-активностей, розважальні зони, лекції, релакс-зони і багато іншого. І усе це серед сонячних галявин, саду, біля озер та лісу.',
     eventUrl:
       'https://api.blink.so/events/share/3f0168da-05d0-40e9-8ef0-14cbf510848d?locale=uk',
     eventImage: '',
-    event_address_id: 2,
+    eventAddressId: 2,
     locale: 'uk_UA',
   },
   {
     eventTitle: 'Tulip Exhibition at Spivoche Pole',
-    date_time: '2023-04-15 09:30:45',
+    dateTime: '2023-04-15 09:30:45',
     description:
       'Usually held from mid-April to mid-May, depending on the weather. In addition to tulips, atmospheric thematic installations on various themes are usually added, with a new theme every year.',
     eventUrl: 'https://www.facebook.com/spivochepole',
     eventImage: '',
-    event_address_id: 3,
+    eventAddressId: 3,
     locale: 'en_US',
   },
   {
     eventTitle: 'Ticket to the SUN 2023',
-    date_time: '2023-08-25 13:00:00',
+    dateTime: '2023-08-25 13:00:00',
     description:
       '3 days, 5 locations, a bunch of masterclasses, eco-activities, entertainment zones, lectures, relaxation zones, and much more. And all of this amidst sunny glades, a garden, near lakes and forests.',
     eventUrl:
       'https://api.blink.so/events/share/3f0168da-05d0-40e9-8ef0-14cbf510848d?locale=en',
     eventImage: '',
-    event_address_id: 4,
+    eventAddressId: 4,
     locale: 'en_US',
   },
 ];
