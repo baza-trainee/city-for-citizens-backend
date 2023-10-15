@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   getEventsController,
   createEventController,
-} = require('../../controllers/events/eventControllers');
+} = require("../../controllers/events");
 
 router
   .route('/')

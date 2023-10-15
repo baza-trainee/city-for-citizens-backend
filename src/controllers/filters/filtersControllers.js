@@ -28,6 +28,4 @@ const getFiltersController = catchAsync(async (req, res) => {
   res.status(200).json(events);
 });
 
-module.exports = {
-  getFiltersController,
-};
+module.exports = getFiltersController;

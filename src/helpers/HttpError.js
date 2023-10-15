@@ -1,11 +1,12 @@
 // функція для обробки помилок майбутніх запитів в контроллерах
 //  для читабельності коду, може стати в нагоді
+
 const errorMessages = {
   400: "Bad request",
-  401: "Unathorized",
-  400: "Forbidden",
-  400: "Not Found",
-  400: "Conflict",
+  401: "Unauthorized",
+  403: "Forbidden",
+  404: "Not Found",
+  409: "Conflict",
 };
 
 const HttpError = (status, message = errorMessages[status]) => {
