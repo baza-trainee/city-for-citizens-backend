@@ -1,11 +1,11 @@
-const utcDateToYMD = require("../helpers/utcDateToYMD");
+const utcDateToYMD = require('../helpers/utcDateToYMD');
 
-const databaseDataForFilters = (events) => {
+const databaseDataForFilters = events => {
   const eventCities = [];
   const eventDates = [];
   const eventTypes = [];
 
-  events.forEach((event) => {
+  events.forEach(event => {
     eventCities.push(event.event_address.city);
     eventDates.push(utcDateToYMD(event.date_time));
     eventTypes.push(event.event_types[0].event_type);
