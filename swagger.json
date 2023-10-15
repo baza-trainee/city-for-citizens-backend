@@ -29,28 +29,33 @@
         "summary": "Filters",
         "tags": ["Filters"],
         "description": "Filters",
-        "parameters": [],
-        "requestBody": {
-          "description": "Filters",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FiltersRequest"
-              }
-            }
+        "parameters": [
+          {
+            "name": "date_time",
+            "in": "query",
+            "type": "string",
+            "description": "Event date, time",
+            "example": "2023-08-25"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "type": "string",
+            "description": "Event city",
+            "example": "Kyiv"
+          },
+          {
+            "name": "event_type",
+            "in": "query",
+            "type": "string",
+            "description": "Event city",
+            "example": "Music Event"
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Filters get successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FiltersResponse"
-                }
-              }
-            }
+            "description": "Successful operation",
+            "content": {}
           },
           "400": {
             "description": "Bad request",
@@ -68,26 +73,26 @@
       "post": {
         "summary": "Events",
         "tags": ["Events"],
-        "description": "Events",
+        "description": "Create new event",
         "parameters": [],
         "requestBody": {
-          "description": "Events",
+          "description": "Create new event",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EventCreateRequest"
+                "$ref": "#/definitions/EventCreateRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Event create successful",
+            "description": "Event created successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EventCreateResponse"
+                  "$ref": "#/definitions/EventCreateResponse"
                 }
               }
             }
@@ -114,18 +119,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EventsRequest"
+                "$ref": "#/definitions/EventsRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Events get successful",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EventsResponse"
+                  "$ref": "#/definitions/EventsResponse"
                 }
               }
             }
@@ -142,41 +147,43 @@
       }
     },
 
-    "components": {
-      "securitySchemes": {
-        "Bearer": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
+    "definitions": {      
+      "FiltersResponse": {
+        "type": "object",
+        "properties": {
+          "date_time": {
+            "type": "string",
+            "description": "Event date, time",
+            "example": "2023-08-25"
+          },
+          "city": {
+            "type": "string",
+            "description": "Event city",
+            "example": "Kyiv"
+          },
+          "event_type": {
+            "type": "string",
+            "description": "Event city",
+            "example": "Music Event"
+          }
         }
       },
-      "schemas": {
-        "FiltersRequest": {
-          "type": "object",
-          "required": [],
-          "properties": {}
-        },
-        "FiltersResponse": {
-          "type": "object",
-          "properties": {}
-        },
-        "EventsRequest": {
-          "type": "object",
-          "required": [],
-          "properties": {}
-        },
-        "EventsResponse": {
-          "type": "object",
-          "properties": {}
-        },
-        "EventCreateRequest": {
-          "type": "object",
-          "properties": {}
-        },
-        "EventCreateResponse": {
-          "type": "object",
-          "properties": {}
-        }
+      "EventsRequest": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      },
+      "EventsResponse": {
+        "type": "object",
+        "properties": {}
+      },
+      "EventCreateRequest": {
+        "type": "object",
+        "properties": {}
+      },
+      "EventCreateResponse": {
+        "type": "object",
+        "properties": {}
       }
     }
   }
