@@ -1,6 +1,6 @@
-const catchAsync = require("../../helpers/catchAsync");
-const db = require("../../models");
-const { getEventsQuery } = require("../../services/getEventsQuery");
+const catchAsync = require('../../helpers/catchAsync');
+const db = require('../../models');
+const { getEventsQuery } = require('../../services/getEventsQuery');
 
 const getEventsController = catchAsync(async (req, res) => {
   const { query } = req;
