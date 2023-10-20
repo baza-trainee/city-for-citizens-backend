@@ -1,15 +1,11 @@
 const express = require('express');
-const imageMiddleware = require('../../middlewares/events/imageMiddleware');
 const router = express.Router();
+const getEventsController = require('../../controllers/events/getEventsController');
+const createEventController = require('../../controllers/events/createEventController');
+const updateEventController = require('../../controllers/events/updateEventController');
 
-const {
-  getEventsController,
-  createEventController,
-} = require("../../controllers/events");
+router.route('/').get(getEventsController).post(createEventController);
 
-router
-  .route('/')
-  .get(getEventsController)
-  .post(imageMiddleware, createEventController);
+router.route('/:id').patch(updateEventController);
 
 module.exports = router;

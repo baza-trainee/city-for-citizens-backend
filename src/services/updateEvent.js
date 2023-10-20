@@ -1,7 +1,8 @@
 const db = require('../models');
 
-const createEvent = async requestData => {
+const updateEvent = async requestData => {
   const {
+    id,
     locale,
     eventTitle,
     date,
@@ -16,7 +17,18 @@ const createEvent = async requestData => {
     eventImage,
   } = requestData;
 
+  const existingEvent = await db.Events.findOne({
+    where: {
+      id,
+    },
+  });
+
+  if (!existingEvent) {
+    throw new Error('Event not found');
+  }
+
   const eventTypesArray = eventType.split(',');
+
   const existingEventTypes = await Promise.all(
     eventTypesArray.map(async eventTypeName => {
       const existingEventType = await db.EventTypes.findOne({
@@ -37,38 +49,46 @@ const createEvent = async requestData => {
     })
   );
 
-  const eventAddress = await db.EventAddress.create({
-    city,
-    street,
-    notes,
-    coordinates,
-    locale,
-  });
+  const eventAddress = await db.EventAddress.update(
+    {
+      city,
+      street,
+      notes,
+      coordinates,
+    },
+    {
+      where: {
+        id: existingEvent.eventAddressId,
+      },
+    }
+  );
 
-  const eventAddressId = eventAddress.id;
-
-  const eventData = {
+  const updatedEventData = {
     locale,
     eventTitle,
     dateTime: new Date(`${date} ${time}`),
     description,
     eventUrl,
     eventImage,
-    eventAddressId: eventAddressId,
   };
 
-  const newEvent = await db.Events.create(eventData);
+  const updatedEvent = await existingEvent.update(updatedEventData);
 
   await Promise.all(
     existingEventTypes.map(async eventType => {
-      await db.EventTypeRelationships.create({
-        eventTypeId: eventType.id,
-        eventId: newEvent.id,
-      });
+      await db.EventTypeRelationships.update(
+        {
+          eventTypeId: eventType.id,
+        },
+        {
+          where: {
+            eventId: updatedEvent.id,
+          },
+        }
+      );
     })
   );
 
-  return newEvent;
+  return updatedEvent;
 };
-
-module.exports = { createEvent };
+module.exports = updateEvent;
