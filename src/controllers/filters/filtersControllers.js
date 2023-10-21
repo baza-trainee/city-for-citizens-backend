@@ -1,11 +1,11 @@
-const catchAsync = require('../../helpers/catchAsync');
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 const { getEventsQuery } = require('../../services/getEventsQuery');
 const {
   databaseDataForFilters,
 } = require('../../services/databaseDataForFilters');
 
-const getFiltersController = catchAsync(async (req, res) => {
+const getFiltersController = ctrlWrapper(async (req, res) => {
   const { query } = req;
   const tableAttributes = {
     eventsAttributes: ['dateTime'],

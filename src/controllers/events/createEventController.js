@@ -1,7 +1,7 @@
-const catchAsync = require('../../helpers/catchAsync');
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const { createEvent } = require('../../services/createEvent');
 
-const createEventController = catchAsync(async (req, res) => {
+const createEventController = ctrlWrapper(async (req, res) => {
   const requestData = req.body;
 
   const newEvent = await createEvent(requestData);

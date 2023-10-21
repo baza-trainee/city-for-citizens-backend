@@ -1,5 +1,5 @@
 const HttpError = require('./HttpError');
-const ctrlWrapper = require('./catchAsync');
+const ctrlWrapper = require('./ctrlWrapper');
 const utcDateToYMD = require('./utcDateToYMD');
 
 module.exports = {
