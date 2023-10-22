@@ -1,7 +1,10 @@
-const catchAsync = require('../../helpers/catchAsync');
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
+const createImage = require('../../services/createImage');
 
-const createImageController = catchAsync(async (req, res) => {
-  res.status(201).json({ message: 'createImageController' });
+const createImageController = ctrlWrapper(async (req, res) => {
+  const eventImage = await createImage(req, res);
+
+  res.status(201).json({ eventImage });
 });
 
 module.exports = createImageController;

@@ -1,8 +1,8 @@
-const catchAsync = require('../../helpers/catchAsync');
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 const { getEventsQuery } = require('../../services/getEventsQuery');
 
-const getEventsController = catchAsync(async (req, res) => {
+const getEventsController = ctrlWrapper(async (req, res) => {
   const { query } = req;
   const eventsQuery = getEventsQuery(query);
 
