@@ -1,11 +1,10 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const mysql = require("mysql2/promise");
+const mysql = require('mysql2/promise');
 
-const dbName = process.env.DB_NAME;
-
-(async () => {
+async function createDb() {
   try {
+    const dbName = process.env.DB_NAME;
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
@@ -13,7 +12,7 @@ const dbName = process.env.DB_NAME;
       password: process.env.DB_PASSWORD,
     });
 
-    console.info("Checking if the database exists...");
+    console.info('Checking if the database exists...');
 
     const [results] = await connection.query(
       `SHOW DATABASES LIKE '${dbName}';`
@@ -27,10 +26,9 @@ const dbName = process.env.DB_NAME;
       // Если база данных существует, выводим сообщение об этом
       console.info(`Database "${dbName}" already exists.`);
     }
-
-    process.exit(0);
   } catch (error) {
-    console.error("Error:", error.message);
-    process.exit(1);
+    console.error('Error:', error.message);
   }
-})();
+}
+
+module.exports = createDb;
