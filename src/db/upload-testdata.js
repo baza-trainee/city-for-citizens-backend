@@ -3,6 +3,8 @@ const {
   EventTypes,
   Events,
   EventTypeRelationships,
+  Users,
+  Tokens,
 } = require('../models');
 
 const eventTypes = [
@@ -201,12 +203,37 @@ const eventTypeRelationships = [
   },
 ];
 
+const users = [
+  {
+    id: 1,
+    name: 'admin',
+    email: 'user@gmail.com',
+    password: '$2b$10$ZUv1eRKGBpCPCMZmfLPpKOdFt23pLtKWRYjpkx53gddU9G8e.IBou',
+    activationLink: '2e1d44b1-cfe1-4944-badd-52ecf780130a',
+    isActivated: true,
+  },
+];
+const tokens = [
+  {
+    id: 1,
+    refreshToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWN0aXZhdGVkIjpmYWxzZSwiaWF0IjoxNjk4MjY2NjkwLCJleHAiOjE2OTgyNjY3MjB9.su4EG5QYNtpG8CEtvV5AlpGY1VSVCuh6jhTrPbkWfQs',
+    userId: 1,
+  },
+];
+
 async function insertData() {
-  console.info('Starting to upload to DB... Wait...');
-  await EventTypes.bulkCreate(eventTypes);
-  await EventAddress.bulkCreate(eventAddresses);
-  await Events.bulkCreate(events);
-  await EventTypeRelationships.bulkCreate(eventTypeRelationships);
-  console.info('Upload to DB successfully done!');
+  try {
+    console.info('Starting to upload to DB... Wait...');
+    await EventTypes.bulkCreate(eventTypes);
+    await EventAddress.bulkCreate(eventAddresses);
+    await Events.bulkCreate(events);
+    await EventTypeRelationships.bulkCreate(eventTypeRelationships);
+    await Users.bulkCreate(users);
+    await Tokens.bulkCreate(tokens);
+  } catch (error) {
+    console.error('Error uploading data to DB:', error);
+  }
 }
-insertData();
+
+exports.insertData = insertData;
