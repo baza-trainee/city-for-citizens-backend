@@ -37,15 +37,28 @@ const createEvent = async requestData => {
     })
   );
 
-  const eventAddress = await db.EventAddress.create({
-    city,
-    street,
-    notes,
-    coordinates,
-    locale,
-  });
-
-  const eventAddressId = eventAddress.id;
+  const eventAddress = async (coordinates, locale, city, street, notes) => {
+    console.log(coordinates, locale)
+    const optionalEvent = await db.EventAddress.findOne({
+      where: {
+        coordinates: coordinates,
+        locale: locale,
+      },
+    });
+    if (optionalEvent) {
+      return optionalEvent;
+    } else {
+      return db.EventAddress.create({
+        city: city,
+        street: street,
+        notes: notes,
+        coordinates: coordinates,
+        locale: locale,
+      });
+    }
+  }
+  
+  const eventAddressId = await eventAddress(coordinates, locale, city, street, notes);
 
   const eventData = {
     locale,
@@ -54,7 +67,7 @@ const createEvent = async requestData => {
     description,
     eventUrl,
     eventImage,
-    eventAddressId: eventAddressId,
+    eventAddressId: eventAddressId.id,
   };
 
   const newEvent = await db.Events.create(eventData);
