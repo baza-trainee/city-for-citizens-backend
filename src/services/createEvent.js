@@ -41,19 +41,19 @@ const createEvent = async requestData => {
     console.log(coordinates, locale)
     const optionalEvent = await db.EventAddress.findOne({
       where: {
-        coordinates: coordinates,
-        locale: locale,
+        coordinates,
+        locale,
       },
     });
     if (optionalEvent) {
       return optionalEvent;
     } else {
       return db.EventAddress.create({
-        city: city,
-        street: street,
-        notes: notes,
-        coordinates: coordinates,
-        locale: locale,
+        city,
+        street,
+        notes,
+        coordinates,
+        locale,
       });
     }
   }
