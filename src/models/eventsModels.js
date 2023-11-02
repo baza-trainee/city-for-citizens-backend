@@ -122,13 +122,5 @@ module.exports = (sequelize, Sequelize) => {
     }
   );
 
-  Events.belongsTo(EventAddress, {
-    onDelete: 'CASCADE',
-  });
-  
-  EventAddress.hasMany(Events, {
-    onDelete: 'CASCADE',
-  });
-
   return { EventAddress, EventTypes, Events, EventTypeRelationships };
 };
