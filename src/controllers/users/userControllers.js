@@ -5,6 +5,8 @@ const {
   logout,
   refresh,
   getAllUsers,
+  passwordResetRequest,
+  passwordReset,
 } = require('../../services/userService');
 const { validationResult } = require('express-validator');
 const HttpError = require('../../helpers/HttpError');
@@ -25,6 +27,7 @@ const registrationCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    path: '/api/refresh',
   });
   return res.json(userData);
 };
@@ -35,6 +38,7 @@ const loginCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    path: '/api/refresh',
   });
   return res.json(userData);
 };
@@ -58,6 +62,7 @@ const refreshCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    path: '/api/refresh',
   });
   return res.json(userData);
 };
@@ -67,6 +72,24 @@ const getUsersCtrl = async (req, res, next) => {
   return res.json(users);
 };
 
+const passwordResetRequestCtrl = async (req, res, next) => {
+  const { email } = req.body;
+
+  await passwordResetRequest(email);
+
+  return res
+    .status(200)
+    .json({ message: 'Password reset link sent to your email account' });
+};
+
+const passwordResetCtrl = async (req, res, next) => {
+  const { token, newPassword } = req.body;
+
+  await passwordReset(token, newPassword);
+
+  return res.status(200).json({ message: 'Password changed successfully' });
+};
+
 module.exports = {
   registrationCtrl,
   loginCtrl,
@@ -74,4 +97,6 @@ module.exports = {
   activateCtrl,
   refreshCtrl,
   getUsersCtrl,
+  passwordResetRequestCtrl,
+  passwordResetCtrl,
 };

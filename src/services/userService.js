@@ -2,9 +2,10 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const HttpError = require('../helpers/HttpError');
 const { Users } = require('../models');
-const { sendActivationMail } = require('./mailService');
+const { sendMail } = require('./mailService');
 const {
   generateTokens,
+  generateResetToken,
   validateRefreshToken,
   saveToken,
   removeToken,
@@ -12,13 +13,24 @@ const {
 } = require('./tokenService');
 const createUserDto = require('../dtos/user-dto');
 
+const pathToEmailTemplates = '../helpers/email/template/';
+const activationAccountTemplatePath =
+  pathToEmailTemplates + 'activationAccount.handlebars';
+const requestResetPasswordTemplatePath =
+  pathToEmailTemplates + 'requestResetPassword.handlebars';
+const resetPasswordTemplatePath =
+  pathToEmailTemplates + 'resetPassword.handlebars';
+
 async function registration(name, email, password) {
   const candidate = await Users.findOne({ where: { email } });
 
   if (candidate) {
     throw HttpError(400, `User with email ${email} already exists`);
   }
-  const hashPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await bcrypt.hash(
+    password,
+    Number(process.env.SALT_ROUNDS)
+  );
 
   const activationLink = uuid.v4(); // v34fa-asfasf-142saf-sa-asf
 
@@ -28,11 +40,14 @@ async function registration(name, email, password) {
     password: hashPassword,
     activationLink,
   });
+  // to, subject, templatePath, templateData
+  const emailData = {
+    link: `${process.env.API_URL}/api/activate/${activationLink}`,
+    name,
+  };
+  const emailSubject = `Activation Account on ${process.env.CLIENT_URL}`;
 
-  await sendActivationMail(
-    email,
-    `${process.env.API_URL}/api/activate/${activationLink}`
-  );
+  await sendMail(email, emailSubject, activationAccountTemplatePath, emailData);
 
   const userDto = createUserDto(user);
 
@@ -97,6 +112,61 @@ async function getAllUsers() {
   const users = await Users.findAll();
   return users;
 }
+async function passwordResetRequest(email) {
+  const user = await Users.findOne({ where: { email } });
+  if (!user) {
+    throw HttpError(400, 'User with this email not found');
+  }
+
+  const userDto = createUserDto(user);
+
+  const token = generateResetToken({ ...userDto });
+
+  await saveToken(userDto.id, token);
+
+  // to, subject, templatePath, templateData
+  const emailData = {
+    link: `${process.env.CLIENT_URL}/password-reset?token=${token}`,
+    name: user.name,
+  };
+  const emailSubject = `Reset Password on ${process.env.CLIENT_URL}`;
+
+  await sendMail(
+    email,
+    emailSubject,
+    requestResetPasswordTemplatePath,
+    emailData
+  );
+}
+async function passwordReset(token, newPassword) {
+  const userDto = validateRefreshToken(token);
+  if (!userDto) {
+    throw HttpError(400, 'Reset link is invalid or has expired');
+  }
+  const user = await Users.findByPk(userDto.id);
+  if (!user) {
+    throw HttpError(400, 'User with this email not found');
+  }
+  const hashPassword = await bcrypt.hash(
+    newPassword,
+    Number(process.env.SALT_ROUNDS)
+  );
+  user.password = hashPassword;
+  await user.save();
+
+  // to, subject, templatePath, templateData
+  const emailData = {
+    name: user.name,
+  };
+  const emailSubject = `Your Password has been Updated on ${process.env.CLIENT_URL}`;
+
+  await sendMail(
+    userDto.email,
+    emailSubject,
+    resetPasswordTemplatePath,
+    emailData
+  );
+}
 
 module.exports = {
   registration,
@@ -105,4 +175,6 @@ module.exports = {
   logout,
   refresh,
   getAllUsers,
+  passwordResetRequest,
+  passwordReset,
 };

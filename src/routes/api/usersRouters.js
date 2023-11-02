@@ -12,6 +12,8 @@ const {
   activateCtrl,
   refreshCtrl,
   getUsersCtrl,
+  passwordResetRequestCtrl,
+  passwordResetCtrl,
 } = require('../../controllers/users/userControllers');
 
 router.post(
@@ -26,5 +28,7 @@ router.post('/logout', ctrlWrapper(logoutCtrl));
 router.get('/activate/:link', ctrlWrapper(activateCtrl));
 router.get('/refresh', ctrlWrapper(refreshCtrl));
 router.get('/users', authMiddleware, ctrlWrapper(getUsersCtrl));
+router.post('/passwordReset/request', ctrlWrapper(passwordResetRequestCtrl));
+router.post('/passwordReset/reset', ctrlWrapper(passwordResetCtrl));
 
 module.exports = router;

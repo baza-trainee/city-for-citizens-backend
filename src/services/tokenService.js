@@ -62,6 +62,13 @@ async function findToken(refreshToken) {
   return token;
 }
 
+function generateResetToken(payload) {
+  const passwordResetToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: '30m',
+  });
+  return passwordResetToken;
+}
+
 module.exports = {
   generateTokens,
   validateAccessToken,
@@ -69,4 +76,5 @@ module.exports = {
   saveToken,
   removeToken,
   findToken,
+  generateResetToken,
 };
