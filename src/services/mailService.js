@@ -1,4 +1,7 @@
 const nodemailer = require('nodemailer');
+const handlebars = require('handlebars');
+const fs = require('fs');
+const path = require('path');
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -10,19 +13,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendActivationMail(to, link) {
+async function sendMail(to, subject, templatePath, templateData) {
   try {
+    const source = fs.readFileSync(path.join(__dirname, templatePath), 'utf8');
+
+    const compiledTemplate = handlebars.compile(source);
+
+    const htmlContent = compiledTemplate(templateData);
+
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
-      subject: 'Activation account on ' + process.env.API_URL,
+      subject,
       text: '',
-      html: `
-                    <div>
-                        <h1>For activate your account click link below</h1>
-                        <a href="${link}">${link}</a>
-                    </div>
-                `,
+      html: htmlContent,
     });
   } catch (error) {
     console.error('Error sending email', error);
@@ -30,5 +34,5 @@ async function sendActivationMail(to, link) {
 }
 
 module.exports = {
-  sendActivationMail,
+  sendMail,
 };
