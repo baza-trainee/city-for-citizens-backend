@@ -27,7 +27,7 @@ const registrationCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    path: '/api/refresh',
+    path: '/api',
   });
   return res.json(userData);
 };
@@ -38,13 +38,17 @@ const loginCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    path: '/api/refresh',
+    path: '/api',
   });
   return res.json(userData);
 };
 
 const logoutCtrl = async (req, res, next) => {
   const { refreshToken } = req.cookies;
+  if (!refreshToken) {
+    return res.status(400).json({ message: 'Missing refreshToken' });
+  }
+
   const token = await logout(refreshToken);
   res.clearCookie('refreshToken');
   return res.json(token);
@@ -62,7 +66,7 @@ const refreshCtrl = async (req, res, next) => {
   res.cookie('refreshToken', userData.refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    path: '/api/refresh',
+    path: '/api',
   });
   return res.json(userData);
 };
