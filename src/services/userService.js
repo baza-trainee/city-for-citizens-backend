@@ -10,6 +10,7 @@ const {
   saveToken,
   removeToken,
   findToken,
+  removeTokenByUserId,
 } = require('./tokenService');
 const createUserDto = require('../dtos/user-dto');
 
@@ -168,6 +169,17 @@ async function passwordReset(token, newPassword) {
   );
 }
 
+async function deleteUser(userId) {
+  const user = await Users.findByPk(userId);
+  if (!user) {
+    throw HttpError(404, 'User not found');
+  }
+
+  await user.destroy();
+
+  await removeTokenByUserId(userId);
+}
+
 module.exports = {
   registration,
   activate,
@@ -177,4 +189,5 @@ module.exports = {
   getAllUsers,
   passwordResetRequest,
   passwordReset,
+  deleteUser,
 };

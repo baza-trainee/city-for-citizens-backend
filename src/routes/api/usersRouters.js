@@ -14,6 +14,7 @@ const {
   getUsersCtrl,
   passwordResetRequestCtrl,
   passwordResetCtrl,
+  deleteUserCtrl,
 } = require('../../controllers/users/userControllers');
 
 router.post(
@@ -30,5 +31,7 @@ router.get('/refresh', ctrlWrapper(refreshCtrl));
 router.get('/users', authMiddleware, ctrlWrapper(getUsersCtrl));
 router.post('/passwordReset/request', ctrlWrapper(passwordResetRequestCtrl));
 router.post('/passwordReset/reset', ctrlWrapper(passwordResetCtrl));
+
+router.delete('/users/:userId', authMiddleware, ctrlWrapper(deleteUserCtrl));
 
 module.exports = router;

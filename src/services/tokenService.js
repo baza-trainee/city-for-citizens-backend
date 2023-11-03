@@ -69,6 +69,14 @@ function generateResetToken(payload) {
   return passwordResetToken;
 }
 
+async function removeTokenByUserId(userId) {
+  const deletedTokens = await Tokens.destroy({
+    where: { userId },
+  });
+
+  return deletedTokens;
+}
+
 module.exports = {
   generateTokens,
   validateAccessToken,
@@ -77,4 +85,5 @@ module.exports = {
   removeToken,
   findToken,
   generateResetToken,
+  removeTokenByUserId,
 };
