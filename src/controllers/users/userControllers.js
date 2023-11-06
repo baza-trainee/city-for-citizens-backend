@@ -7,6 +7,7 @@ const {
   getAllUsers,
   passwordResetRequest,
   passwordReset,
+  deleteUser,
 } = require('../../services/userService');
 const { validationResult } = require('express-validator');
 const HttpError = require('../../helpers/HttpError');
@@ -90,6 +91,14 @@ const passwordResetCtrl = async (req, res, next) => {
   return res.status(200).json({ message: 'Password changed successfully' });
 };
 
+const deleteUserCtrl = async (req, res, next) => {
+  const userId = req.params.userId;
+
+  await deleteUser(userId);
+
+  return res.status(204).json({ message: 'User successfully deleted' });
+};
+
 module.exports = {
   registrationCtrl,
   loginCtrl,
@@ -99,4 +108,5 @@ module.exports = {
   getUsersCtrl,
   passwordResetRequestCtrl,
   passwordResetCtrl,
+  deleteUserCtrl,
 };
