@@ -8,6 +8,7 @@ const {
   passwordResetSchema,
   refreshTokenSchema,
   activationLinkSchema,
+  userIdSchema,
 } = require('../../validation/joi.schemas');
 const ValidationTypes = require('../../validation/validationTypes');
 
@@ -22,6 +23,7 @@ const {
   getUsersCtrl,
   passwordResetRequestCtrl,
   passwordResetCtrl,
+  deleteUserCtrl,
 } = require('../../controllers/users/userControllers');
 
 router.post(
@@ -59,5 +61,12 @@ router.post(
   '/passwordReset/reset',
   validate(passwordResetSchema, ValidationTypes.BODY),
   ctrlWrapper(passwordResetCtrl)
+);
+
+router.delete(
+  '/users/:userId',
+  authMiddleware,
+  validate(userIdSchema, ValidationTypes.PARAMS),
+  ctrlWrapper(deleteUserCtrl)
 );
 module.exports = router;
