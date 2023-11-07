@@ -4,7 +4,6 @@ const getEventsController = require('../../controllers/events/getEventsControlle
 const createEventController = require('../../controllers/events/createEventController');
 const updateEventController = require('../../controllers/events/updateEventController');
 const deleteEventController = require('../../controllers/events/deleteEventController');
-const deleteEventController = require('../../controllers/events/deleteEventController');
 const authMiddleware = require('../../middlewares/authMiddleware');
 const validate = require('../../validation/validation');
 const { eventSchema, checkIdSchema } = require('../../validation/joi.schemas');
@@ -31,6 +30,5 @@ router
     validate(checkIdSchema, ValidationTypes.PARAMS),
     deleteEventController
   );
-router.route('/:id').patch(updateEventController).delete(deleteEventController);
 
 module.exports = router;
