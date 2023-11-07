@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
-const { body } = require('express-validator');
+const validate = require('../../validation/validation');
+const {
+  loginSchema,
+  registrationSchema,
+  passwordResetRequestSchema,
+  passwordResetSchema,
+  refreshTokenSchema,
+  activationLinkSchema,
+} = require('../../validation/joi.schemas');
+const ValidationTypes = require('../../validation/validationTypes');
 
 const authMiddleware = require('../../middlewares/authMiddleware');
 const ctrlWrapper = require('../../helpers/ctrlWrapper');
@@ -18,17 +26,38 @@ const {
 
 router.post(
   '/registration',
-  body('email').isEmail(),
-  body('password').isLength({ min: 3, max: 32 }),
+  validate(registrationSchema, ValidationTypes.BODY),
   ctrlWrapper(registrationCtrl)
 );
-
-router.post('/login', ctrlWrapper(loginCtrl));
-router.post('/logout', ctrlWrapper(logoutCtrl));
-router.get('/activate/:link', ctrlWrapper(activateCtrl));
-router.get('/refresh', ctrlWrapper(refreshCtrl));
+router.post(
+  '/login',
+  validate(loginSchema, ValidationTypes.BODY),
+  ctrlWrapper(loginCtrl)
+);
+router.post(
+  '/logout',
+  validate(refreshTokenSchema, ValidationTypes.COOKIES),
+  ctrlWrapper(logoutCtrl)
+);
+router.get(
+  '/activate/:link',
+  validate(activationLinkSchema, ValidationTypes.PARAMS),
+  ctrlWrapper(activateCtrl)
+);
+router.get(
+  '/refresh',
+  validate(refreshTokenSchema, ValidationTypes.COOKIES),
+  ctrlWrapper(refreshCtrl)
+);
 router.get('/users', authMiddleware, ctrlWrapper(getUsersCtrl));
-router.post('/passwordReset/request', ctrlWrapper(passwordResetRequestCtrl));
-router.post('/passwordReset/reset', ctrlWrapper(passwordResetCtrl));
-
+router.post(
+  '/passwordReset/request',
+  validate(passwordResetRequestSchema, ValidationTypes.BODY),
+  ctrlWrapper(passwordResetRequestCtrl)
+);
+router.post(
+  '/passwordReset/reset',
+  validate(passwordResetSchema, ValidationTypes.BODY),
+  ctrlWrapper(passwordResetCtrl)
+);
 module.exports = router;
