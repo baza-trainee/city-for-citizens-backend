@@ -90,6 +90,13 @@ const checkIdSchema = Joi.object({
   }),
 });
 
+const userIdSchema = Joi.object({
+  userId: Joi.number().required().messages({
+    number: 'userId must be a number',
+    required: 'userId is required',
+  }),
+});
+
 module.exports = {
   registrationSchema,
   loginSchema,
@@ -100,4 +107,5 @@ module.exports = {
   eventImageSchema,
   eventSchema,
   checkIdSchema,
+  userIdSchema,
 };
