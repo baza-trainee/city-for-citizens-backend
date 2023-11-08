@@ -208,7 +208,7 @@ const users = [
     id: 1,
     name: 'admin',
     email: 'user@gmail.com',
-    password: '$2b$10$ZUv1eRKGBpCPCMZmfLPpKOdFt23pLtKWRYjpkx53gddU9G8e.IBou',
+    password: '$2b$10$zorcK/1r/pG8VRHxPPWdBuglW60MYq8Bn9TW0aRxufeCEPapGJ4U2',
     activationLink: '2e1d44b1-cfe1-4944-badd-52ecf780130a',
     isActivated: true,
   },

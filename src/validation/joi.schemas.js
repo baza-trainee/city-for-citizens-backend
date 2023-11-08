@@ -67,20 +67,26 @@ const eventImageSchema = Joi.object({
 const eventSchema = Joi.object({
   locale: Joi.string().required(),
   eventTitle: Joi.string().required(),
-  date: Joi.date().required(),
-  time: Joi.string().required(),
+  date: Joi.string()
+    .pattern(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)
+    .required(),
+  time: Joi.string()
+    .regex(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+    .required(),
   description: Joi.string().required(),
   eventUrl: Joi.string().required(),
   city: Joi.string().required(),
   street: Joi.string().required(),
   notes: Joi.string().optional(),
   coordinates: Joi.string()
-    .regex(/^-?\d+\.\d+, -?\d+\.\d+$/)
+    .regex(
+      /^(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?[0-8]\d((\.)|\.\d{1,20})?)|(0*?4?[1-9]|0)((\.)|\.0{1,20})?),\s*(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?\d\d((\.)|\.\d{1,20})?)|(0*?1[0-7]\d((\.)|\.\d{1,20})?)|(0*?1[0-7][0-9]|[1-8]\d|90)((\.)|\.0{1,20})?)$/
+    )
     .required(),
   eventType: Joi.string().required(),
   eventImage: Joi.string()
-    .required()
-    .pattern(/^event[0-9]{13}.jpg$/),
+    .pattern(/^event\d{10,20}\.jpg$/)
+    .required(),
 });
 
 const checkIdSchema = Joi.object({
