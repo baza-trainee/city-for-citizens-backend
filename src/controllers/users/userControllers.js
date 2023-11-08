@@ -9,18 +9,8 @@ const {
   passwordReset,
   deleteUser,
 } = require('../../services/userService');
-const { validationResult } = require('express-validator');
-const HttpError = require('../../helpers/HttpError');
 
 const registrationCtrl = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const errorMessages = errors
-      .array()
-      .map(error => error.msg)
-      .join(', '); // join error messages
-    throw HttpError(400, `Validation error: ${errorMessages}`);
-  }
   const { name, email, password } = req.body;
 
   const userData = await registration(name, email, password);
