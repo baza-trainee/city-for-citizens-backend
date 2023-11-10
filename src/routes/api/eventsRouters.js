@@ -27,6 +27,7 @@ router
     updateEventController
   )
   .delete(
+    authMiddleware,
     validate(checkIdSchema, ValidationTypes.PARAMS),
     deleteEventController
   );

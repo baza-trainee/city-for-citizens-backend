@@ -17,6 +17,9 @@ const validation = (schema, dataLocation) => {
       case ValidationTypes.PARAMS:
         data = req.params;
         break;
+      case ValidationTypes.COOKIES:
+        data = req.cookies;
+        break;
       default:
         data = {};
         break;

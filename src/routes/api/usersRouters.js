@@ -46,7 +46,7 @@ router.get(
   validate(activationLinkSchema, ValidationTypes.PARAMS),
   ctrlWrapper(activateCtrl)
 );
-router.get(
+router.post(
   '/refresh',
   validate(refreshTokenSchema, ValidationTypes.COOKIES),
   ctrlWrapper(refreshCtrl)
