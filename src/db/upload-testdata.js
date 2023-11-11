@@ -141,6 +141,7 @@ const eventAddresses = [
 
 const events = [
   {
+    idIdentifier: '550e8400-e29b-41d4-a716-446655440000',
     eventTitle: 'Виставка квітів "Тюльпани на Співочому полі"',
     dateTime: '2023-04-15 09:30:45',
     description:
@@ -151,6 +152,7 @@ const events = [
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '450e8400-e29b-41d4-a716-446655440000',
     eventTitle: 'Ticket to the SUN 2023',
     dateTime: '2023-08-25 13:00:00',
     description:
@@ -162,6 +164,7 @@ const events = [
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29b-41d4-a716-446655440000',
     eventTitle: 'Tulip Exhibition at Spivoche Pole',
     dateTime: '2023-04-15 09:30:45',
     description:
@@ -172,6 +175,7 @@ const events = [
     locale: 'en_US',
   },
   {
+    idIdentifier: '450e8400-e29b-41d4-a716-446655440000',
     eventTitle: 'Ticket to the SUN 2023',
     dateTime: '2023-08-25 13:00:00',
     description:

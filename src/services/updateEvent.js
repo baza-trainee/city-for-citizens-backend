@@ -2,6 +2,7 @@ const db = require('../models');
 
 const updateEvent = async requestData => {
   const {
+    idIdentifier,
     id,
     locale,
     eventTitle,
@@ -64,6 +65,7 @@ const updateEvent = async requestData => {
   );
 
   const updatedEventData = {
+    idIdentifier,
     locale,
     eventTitle,
     dateTime: new Date(`${date} ${time}`),

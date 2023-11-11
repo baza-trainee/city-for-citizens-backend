@@ -2,6 +2,7 @@ const db = require('../models');
 
 const createEvent = async requestData => {
   const {
+    idIdentifier,
     locale,
     eventTitle,
     date,
@@ -38,7 +39,7 @@ const createEvent = async requestData => {
   );
 
   const eventAddress = async (coordinates, locale, city, street, notes) => {
-    console.log(coordinates, locale)
+    console.log(coordinates, locale);
     const optionalEvent = await db.EventAddress.findOne({
       where: {
         coordinates,
@@ -56,11 +57,18 @@ const createEvent = async requestData => {
         locale,
       });
     }
-  }
-  
-  const eventAddressId = await eventAddress(coordinates, locale, city, street, notes);
+  };
+
+  const eventAddressId = await eventAddress(
+    coordinates,
+    locale,
+    city,
+    street,
+    notes
+  );
 
   const eventData = {
+    idIdentifier,
     locale,
     eventTitle,
     dateTime: new Date(`${date} ${time}`),
