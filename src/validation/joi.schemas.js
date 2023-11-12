@@ -65,6 +65,7 @@ const eventImageSchema = Joi.object({
 });
 
 const eventSchema = Joi.object({
+  idIdentifier: Joi.string().uuid({ version: 'uuidv4' }).required(),
   locale: Joi.string().required(),
   eventTitle: Joi.string().required(),
   date: Joi.string()

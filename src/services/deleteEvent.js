@@ -8,20 +8,54 @@ async function deleteEvent(eventId, res) {
     throw new Error('Event not found');
   }
 
-  await db.EventTypeRelationships.destroy({
+  const idIdentifier = event.idIdentifier;
+
+  const events = await db.Events.findAll({
     where: {
-      eventId: eventId,
+      idIdentifier,
     },
   });
 
-  await event.destroy();
+  const eventTypeRelationships = await db.EventTypeRelationships.findAll({
+    where: {
+      eventId: {
+        [db.Sequelize.Op.in]: events.map(event => event.id),
+      },
+    },
+  });
 
-  const successfullyDeletedImage = deleteImage(event.eventImage, res);
-  if (!successfullyDeletedImage) {
-    throw new Error('Image not found or could not be deleted');
-  }
+  const eventAddresses = await db.EventAddress.findAll({
+    where: {
+      id: {
+        [db.Sequelize.Op.in]: events.map(event => event.eventAddressId),
+      },
+    },
+  });
 
-  return event;
+  const eventImages = await db.Events.findAll({
+    where: {
+      id: {
+        [db.Sequelize.Op.in]: events.map(event => event.id),
+      },
+    },
+    attributes: ['eventImage'],
+  });
+
+  await Promise.all(
+    eventTypeRelationships.map(eventTypeRelationship =>
+      eventTypeRelationship.destroy()
+    )
+  );
+
+  await Promise.all(eventAddresses.map(eventAddress => eventAddress.destroy()));
+
+  await Promise.all(
+    eventImages.map(eventImage => deleteImage(eventImage.eventImage, res))
+  );
+
+  await Promise.all(events.map(event => event.destroy()));
+
+  return events;
 }
 
 module.exports = { deleteEvent };
