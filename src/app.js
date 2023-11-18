@@ -20,12 +20,24 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(logger(formatsLogger));
 app.use(cookieParser());
+
+const allowedOrigins = [process.env.CLIENT_URL1, process.env.CLIENT_URL2];
+
 app.use(
   cors({
-    credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
+
 app.use(express.json());
 
 app.use(express.static('public'));

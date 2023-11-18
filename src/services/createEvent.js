@@ -39,24 +39,13 @@ const createEvent = async requestData => {
   );
 
   const eventAddress = async (coordinates, locale, city, street, notes) => {
-    console.log(coordinates, locale);
-    const optionalEvent = await db.EventAddress.findOne({
-      where: {
-        coordinates,
-        locale,
-      },
+    return db.EventAddress.create({
+      city,
+      street,
+      notes,
+      coordinates,
+      locale,
     });
-    if (optionalEvent) {
-      return optionalEvent;
-    } else {
-      return db.EventAddress.create({
-        city,
-        street,
-        notes,
-        coordinates,
-        locale,
-      });
-    }
   };
 
   const eventAddressId = await eventAddress(
