@@ -36,12 +36,6 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       timestamps: false,
-      indexes: [
-        {
-          unique: true,
-          fields: ['coordinates', 'locale'],
-        },
-      ],
     }
   );
 
@@ -105,7 +99,7 @@ module.exports = (sequelize, Sequelize) => {
       eventAddressId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: 'CASCADE',
+
         references: {
           model: EventAddress,
           key: 'id',
