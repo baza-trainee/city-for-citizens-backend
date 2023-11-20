@@ -99,7 +99,7 @@ module.exports = (sequelize, Sequelize) => {
       eventAddressId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-
+        onDelete: 'CASCADE',
         references: {
           model: EventAddress,
           key: 'id',
