@@ -60,7 +60,7 @@ const createEvent = async requestData => {
     idIdentifier,
     locale,
     eventTitle,
-    dateTime: new Date(`${date} ${time}`),
+    dateTime: new Date(`${date} ${time} +00:00`),
     description,
     eventUrl,
     eventImage,
