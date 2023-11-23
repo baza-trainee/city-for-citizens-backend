@@ -1,6 +1,7 @@
 const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 const { getEventsQuery } = require('../../services/getEventsQuery');
+const path = require('path');
 
 const getEventsController = ctrlWrapper(async (req, res) => {
   const { query } = req;
@@ -9,7 +10,7 @@ const getEventsController = ctrlWrapper(async (req, res) => {
   const events = await db.Events.findAll(eventsQuery);
   events.forEach(event => {
     if (event.eventImage) {
-      event.eventImage = `${process.env.API_URL}${process.env.DIR_IMAGES}${event.eventImage}`;
+      event.eventImage = path.join(process.env.DIR_IMAGES, event.eventImage);
     }
   });
 
