@@ -12,8 +12,6 @@ async function setup() {
     console.error('Error:', error.message);
     process.exit(1);
   }
-
-  process.exit(0);
 }
 
-setup();
+module.exports = { setup };
