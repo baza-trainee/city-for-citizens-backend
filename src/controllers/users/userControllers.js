@@ -19,6 +19,7 @@ const registrationCtrl = async (req, res, next) => {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     path: '/api',
+    sameSite: 'None',
   });
   return res.json(userData);
 };
@@ -30,6 +31,7 @@ const loginCtrl = async (req, res, next) => {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     path: '/api',
+    sameSite: 'None',
   });
   return res.json(userData);
 };
@@ -58,6 +60,7 @@ const refreshCtrl = async (req, res, next) => {
     maxAge: 30 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     path: '/api',
+    sameSite: 'None',
   });
   return res.json(userData);
 };
