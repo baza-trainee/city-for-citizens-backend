@@ -20,6 +20,7 @@ const registrationCtrl = async (req, res, next) => {
     httpOnly: true,
     path: '/api',
     sameSite: 'None',
+    secure: true,
   });
   return res.json(userData);
 };
@@ -32,6 +33,7 @@ const loginCtrl = async (req, res, next) => {
     httpOnly: true,
     path: '/api',
     sameSite: 'None',
+    secure: true,
   });
   return res.json(userData);
 };
@@ -61,6 +63,7 @@ const refreshCtrl = async (req, res, next) => {
     httpOnly: true,
     path: '/api',
     sameSite: 'None',
+    secure: true,
   });
   return res.json(userData);
 };
