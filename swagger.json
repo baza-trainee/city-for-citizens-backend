@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://7l55nnhl-4000.euw.devtunnels.ms" }],
+  "servers": [{ "url": "http://185-237-14-12.cloud-xip.com:8082" }],
   "tags": [
     {
       "name": "Filters",
@@ -20,6 +20,14 @@
     {
       "name": "Events",
       "description": "Events endpoints"
+    },
+    {
+      "name": "Image",
+      "description": "Image endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "Users endpoints"
     }
   ],
 
@@ -38,14 +46,14 @@
             "example": "Kyiv"
           },
           {
-            "name": "date_time",
+            "name": "date",
             "in": "query",
             "type": "string",
             "description": "Event date, time",
             "example": "2023-08-25"
           },
           {
-            "name": "event_type",
+            "name": "eventType",
             "in": "query",
             "type": "string",
             "description": "Event type",
@@ -102,40 +110,6 @@
     },
 
     "/api/events": {
-      "post": {
-        "summary": "Events",
-        "tags": ["Events"],
-        "description": "Create new event",
-        "parameters": [],
-        "requestBody": {
-          "description": "Create new event",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Event created successful",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {}
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          }
-        }
-      },
-
       "get": {
         "summary": "Events",
         "tags": ["Events"],
@@ -156,12 +130,17 @@
                         "description": "Event id",
                         "example": 1
                       },
-                      "event_title": {
+                      "idIdentifier": {
+                        "type": "number",
+                        "description": "Event id",
+                        "example": "450e8400-e29b-41d4-a716-446655440000"
+                      },
+                      "eventTitle": {
                         "type": "string",
                         "description": "Event title",
                         "example": "Виставка квітів \"Тюльпани на Співочому полі\""
                       },
-                      "date_time": {
+                      "dateTime": {
                         "type": "string",
                         "description": "Event date, time",
                         "example": "2023-04-15T06:30:45.000Z"
@@ -171,17 +150,17 @@
                         "description": "Event description",
                         "example": "Проводиться приблизно з середини квітня по середину травня, в залежності від погоди. Окрім тюльпанів зазвичай додаються атмосферні тематичні інсталяції по темі, тема щороку нова."
                       },
-                      "event_url": {
+                      "eventUrl": {
                         "type": "string",
                         "description": "Event url",
                         "example": "https://www.facebook.com/spivochepole"
                       },
-                      "event_image": {
+                      "eventImage": {
                         "type": "string",
                         "description": "Event image",
                         "example": ""
                       },
-                      "event_address_id": {
+                      "eventAddressId": {
                         "type": "number",
                         "description": "Event address id",
                         "example": 1
@@ -226,7 +205,7 @@
                           }
                         }
                       },
-                      "event_types": {
+                      "eventTypes": {
                         "type": "array",
                         "items": {
                           "type": "object",
@@ -236,7 +215,7 @@
                               "description": "Event id",
                               "example": 1
                             },
-                            "event_type": {
+                            "eventType": {
                               "type": "string",
                               "description": "Event type",
                               "example": "Квітковий фестиваль"
@@ -264,6 +243,413 @@
             "content": {}
           }
         }
+      },
+
+      "post": {
+        "summary": "Events",
+        "tags": ["Events"],
+        "description": "Create new event",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Create new event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "description": "Event locale",
+                    "example": "uk_UA"
+                  },
+                  "idIdentifier": {
+                    "type": "string",
+                    "description": "Event idIdentifier",
+                    "example": "450e8400-e29b-41d4-a716-446655440000"
+                  },
+                  "eventTitle": {
+                    "type": "string",
+                    "description": "Event title",
+                    "example": "В гостях у Петровича44"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Event date",
+                    "example": "2023-04-22"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Event time",
+                    "example": "11:11"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Event description",
+                    "example": "test descr"
+                  },
+                  "eventUrl": {
+                    "type": "string",
+                    "description": "Event url",
+                    "example": "http://halabuda.com"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "Event city",
+                    "example": "Тернопіль"
+                  },
+                  "street": {
+                    "type": "string",
+                    "description": "Event street",
+                    "example": "Степана Будного, 12"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Event notes",
+                    "example": "Біля гаражу Петровича"
+                  },
+                  "coordinates": {
+                    "type": "string",
+                    "description": "Event coordinates",
+                    "example": "49.538873573784386, 25.583378061974138"
+                  },
+                  "eventType": {
+                    "type": "string",
+                    "description": "Event type",
+                    "example": "Посиденьки"
+                  },
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "/public/ffff.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Event id",
+                      "example": 26
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "Event locale",
+                      "example": "uk_UA"
+                    },
+                    "eventTitle": {
+                      "type": "string",
+                      "description": "Event title",
+                      "example": "В гостях у Петровича44"
+                    },
+                    "dateTime": {
+                      "type": "string",
+                      "description": "Event date, time",
+                      "example": "2023-04-22T08:11:00.000Z"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Event description",
+                      "example": "test descr"
+                    },
+                    "eventUrl": {
+                      "type": "string",
+                      "description": "Event url",
+                      "example": "http://halabuda.com"
+                    },
+                    "eventImage": {
+                      "type": "string",
+                      "description": "Event image",
+                      "example": "/public/ffff.jpg"
+                    },
+                    "eventAddressId": {
+                      "type": "number",
+                      "description": "Event address id",
+                      "example": 26
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/events/:id": {
+      "patch": {
+        "summary": "Events",
+        "tags": ["Events"],
+        "description": "Update event",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Update event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "description": "Event locale",
+                    "example": "uk_UA"
+                  },                  
+                  "eventTitle": {
+                    "type": "string",
+                    "description": "Event title",
+                    "example": "В гостях у Петровича"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Event date",
+                    "example": "2023-04-22"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Event time",
+                    "example": "11:11"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Event description",
+                    "example": "test descr"
+                  },
+                  "eventUrl": {
+                    "type": "string",
+                    "description": "Event url",
+                    "example": "http://halabuda.com"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "Event city",
+                    "example": "Тернопіль"
+                  },
+                  "street": {
+                    "type": "string",
+                    "description": "Event street",
+                    "example": "Степана Будного, 12"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Event notes",
+                    "example": "Біля гаражу Петровича"
+                  },
+                  "coordinates": {
+                    "type": "string",
+                    "description": "Event coordinates",
+                    "example": "49.538873573784386, 25.583378061974138"
+                  },
+                  "eventType": {
+                    "type": "string",
+                    "description": "Event type",
+                    "example": "Посиденьки"
+                  },
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "/public/ffff.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Event id",
+                      "example": 26
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "Event locale",
+                      "example": "uk_UA"
+                    },
+                    "eventTitle": {
+                      "type": "string",
+                      "description": "Event title",
+                      "example": "В гостях у Петровича"
+                    },
+                    "dateTime": {
+                      "type": "string",
+                      "description": "Event date, time",
+                      "example": "2023-04-22T08:11:00.000Z"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Event description",
+                      "example": "test descr"
+                    },
+                    "eventUrl": {
+                      "type": "string",
+                      "description": "Event url",
+                      "example": "http://halabuda.com"
+                    },
+                    "eventImage": {
+                      "type": "string",
+                      "description": "Event image",
+                      "example": "/public/ffff.jpg"
+                    },
+                    "eventAddressId": {
+                      "type": "number",
+                      "description": "Event address id",
+                      "example": 26
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+
+      "delete": {
+        "summary": "Events",
+        "tags": ["Events"],
+        "description": "Events",
+        "parameters": []
+      }
+    },
+
+    "/api/image": {
+      "post": {
+        "summary": "Image",
+        "tags": ["Image"],
+        "description": "Image",
+        "parameters": []
+      },
+
+      "delete": {
+        "summary": "Image",
+        "tags": ["Image"],
+        "description": "Image",
+        "parameters": []
+      }
+    },
+
+    "/api/registration": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/login": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/logout": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/activate/:link": {
+      "get": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/refresh": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/users": {
+      "get": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/passwordReset/request": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/passwordReset/reset": {
+      "post": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    },
+
+    "/api/users/:userId": {
+      "delete": {
+        "summary": "Users",
+        "tags": ["Users"],
+        "description": "Users",
+        "parameters": []
+      }
+    }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
