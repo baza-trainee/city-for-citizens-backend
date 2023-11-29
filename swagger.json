@@ -246,7 +246,7 @@
       },
 
       "post": {
-        "summary": "Events",
+        "summary": "Create new event",
         "tags": ["Events"],
         "description": "Create new event",
         "parameters": [],
@@ -398,9 +398,9 @@
       }
     },
 
-    "/api/events/:id": {
+    "/api/events/{id}": {
       "patch": {
-        "summary": "Events",
+        "summary": "Update event",
         "tags": ["Events"],
         "description": "Update event",
         "parameters": [],
@@ -547,7 +547,7 @@
       },
 
       "delete": {
-        "summary": "Events",
+        "summary": "Delete event",
         "tags": ["Events"],
         "description": "Delete event",
         "parameters": [
@@ -585,7 +585,7 @@
 
     "/api/image": {
       "post": {
-        "summary": "Image",
+        "summary": "Event image",
         "tags": ["Image"],
         "description": "Event image",
         "parameters": [],
@@ -634,7 +634,7 @@
       },
 
       "delete": {
-        "summary": "Image",
+        "summary": "Delete image",
         "tags": ["Image"],
         "description": "Delete image",
         "parameters": [],
@@ -684,82 +684,361 @@
 
     "/api/registration": {
       "post": {
-        "summary": "Users",
+        "summary": "User registration",
         "tags": ["Users"],
-        "description": "Users",
-        "parameters": []
+        "description": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "User registration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Mango"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "Mango12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "description": "accessToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "description": "refreshToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "User id",
+                          "example": 35
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "example": "Mango@gmail.com"
+                        },
+                        "isActivated": {
+                          "type": "boolean",
+                          "description": "User isActivated",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
       }
     },
 
     "/api/login": {
       "post": {
-        "summary": "Users",
+        "summary": "User login",
         "tags": ["Users"],
-        "description": "Users",
-        "parameters": []
+        "description": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "User login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Mango"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "Mango12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "description": "accessToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "description": "refreshToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "User id",
+                          "example": 35
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "example": "Mango@gmail.com"
+                        },
+                        "isActivated": {
+                          "type": "boolean",
+                          "description": "User isActivated",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     },
 
     "/api/logout": {
       "post": {
-        "summary": "Users",
+        "summary": "User logout",
         "tags": ["Users"],
-        "description": "Users",
+        "description": "User logout",
         "parameters": []
       }
     },
 
-    "/api/activate/:link": {
+    "/api/activate/{link}": {
       "get": {
-        "summary": "Users",
+        "summary": "User activation",
         "tags": ["Users"],
-        "description": "Users",
+        "description": "User activation",
         "parameters": []
       }
     },
 
     "/api/refresh": {
       "post": {
-        "summary": "Users",
+        "summary": "Refresh token",
         "tags": ["Users"],
-        "description": "Users",
+        "description": "Refresh token",
         "parameters": []
       }
     },
 
     "/api/users": {
       "get": {
-        "summary": "Users",
+        "summary": "Get all users",
         "tags": ["Users"],
-        "description": "Users",
+        "description": "Get all users",
         "parameters": []
       }
     },
 
     "/api/passwordReset/request": {
       "post": {
-        "summary": "Users",
+        "summary": "Password reset request",
         "tags": ["Users"],
-        "description": "Users",
-        "parameters": []
+        "description": "Password reset request",
+        "parameters": [],
+        "requestBody": {
+          "description": "Password reset request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Password reset response",
+                      "example": "Password reset link sent to your email account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     },
 
     "/api/passwordReset/reset": {
       "post": {
-        "summary": "Users",
+        "summary": "Password reset",
         "tags": ["Users"],
-        "description": "Users",
-        "parameters": []
+        "description": "Password reset",
+        "parameters": [],
+        "requestBody": {
+          "description": "Password reset",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Token",
+                    "example": "eyJhbGciOiJIkpXVCJ9.eyJpZCI6MSwi2MjA5Nn0.Mko5wxmtYRrHHcRt0"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "new password",
+                    "example": "123454321"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Password reset response",
+                      "example": "Password changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     },
 
-    "/api/users/:userId": {
+    "/api/users/{userId}": {
       "delete": {
-        "summary": "Users",
+        "summary": "Delete user",
         "tags": ["Users"],
-        "description": "Users",
-        "parameters": []
+        "description": "Delete user",        
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "example": "33",
+            "schema": {
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, user is deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     }
   },
