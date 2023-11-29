@@ -386,6 +386,10 @@
             "description": "Bad request",
             "content": {}
           },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
           "404": {
             "description": "Not found",
             "content": {}
@@ -413,7 +417,7 @@
                     "type": "string",
                     "description": "Event locale",
                     "example": "uk_UA"
-                  },                  
+                  },
                   "eventTitle": {
                     "type": "string",
                     "description": "Event title",
@@ -531,6 +535,10 @@
             "description": "Bad request",
             "content": {}
           },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
           "404": {
             "description": "Not found",
             "content": {}
@@ -541,8 +549,37 @@
       "delete": {
         "summary": "Events",
         "tags": ["Events"],
-        "description": "Events",
-        "parameters": []
+        "description": "Delete event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "example": "33",
+            "schema": {
+              "minimum": 1
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation, event is deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     },
 
@@ -550,15 +587,98 @@
       "post": {
         "summary": "Image",
         "tags": ["Image"],
-        "description": "Image",
-        "parameters": []
+        "description": "Event image",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Event image (multipart/form-data)",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventImage": {
+                    "type": "file",
+                    "format": "binary",
+                    "description": "Event image",
+                    "example": "event1697920509934.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation, event image created",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized (email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       },
 
       "delete": {
         "summary": "Image",
         "tags": ["Image"],
-        "description": "Image",
-        "parameters": []
+        "description": "Delete image",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Delete image",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "event1697920509934.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation, event image deleted",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized (email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
       }
     },
 

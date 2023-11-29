@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
 });
 
 async function init() {
-  await assertDatabaseConnectionOk();
+  // await assertDatabaseConnectionOk();
 
   console.log(`Starting Sequelize on port ${PORT}...`);
 
