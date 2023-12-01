@@ -7,7 +7,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     ports:
-      - 3307:3306
+      - 127.0.0.1:$DB_PORT:3306
     environment:
       MYSQL_DATABASE: 'cityForCitizens'
       MYSQL_PASSWORD: 1488
@@ -24,8 +24,10 @@ services:
     image: city-for-citizens-backend:0.0.1.RELEASE
     command: npm run start
     restart: unless-stopped
+    env_file:
+      - ./.env
     ports:
-      - 4000:4000
+      - $PORT:4000
     environment:
       DB_HOST: mysqldb
       DB_PORT: 3306
