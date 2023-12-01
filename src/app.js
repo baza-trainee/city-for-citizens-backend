@@ -10,7 +10,6 @@ const eventsRouter = require('./routes/api/eventsRouters');
 const imageRouter = require('./routes/api/imageRouters');
 const usersRouters = require('./routes/api/usersRouters');
 const { assertDatabaseConnectionOk } = require('./models');
-const { setup } = require('./db/setup');
 
 const app = express();
 

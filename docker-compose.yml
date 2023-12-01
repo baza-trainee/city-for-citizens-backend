@@ -22,7 +22,7 @@ services:
     container_name: appcontainer
     build: .
     image: city-for-citizens-backend:0.0.1.RELEASE
-    command: npm run start:deploy
+    command: npm run start
     restart: unless-stopped
     ports:
       - 4000:4000
