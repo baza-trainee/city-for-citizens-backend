@@ -6,6 +6,7 @@ async function createDb() {
   try {
     const dbName = process.env.DB_NAME;
     const connection = await mysql.createConnection({
+      port: process.env.DB_PORT,
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
       user: process.env.DB_USER,
