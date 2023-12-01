@@ -14,7 +14,6 @@ const { assertDatabaseConnectionOk } = require('./models');
 const app = express();
 
 const PORT = process.env.PORT || 4000;
-const HOST = process.env.HOST || 'localhost';
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
@@ -62,8 +61,8 @@ async function init() {
 
   console.log(`Starting Sequelize on port ${PORT}...`);
 
-  app.listen(PORT, HOST, () =>
-    console.log(`Server started at: http://${HOST}:${PORT}`)
+  app.listen(PORT, () =>
+    console.log(`Server started at: http://localhost:${PORT}`)
   );
 }
 
