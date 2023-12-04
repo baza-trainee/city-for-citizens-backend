@@ -20,7 +20,7 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 app.use(logger(formatsLogger));
 app.use(cookieParser());
 
-const allowedOrigins = [process.env.CLIENT_URL1, process.env.CLIENT_URL2];
+const allowedOrigins = [process.env.CLIENT_URL];
 
 app.use(
   cors({
