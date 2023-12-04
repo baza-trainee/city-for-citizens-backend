@@ -7,7 +7,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     ports:
-      - 127.0.0.1:$DB_PORT:3306
+      - 127.0.0.1:$DB_LOCAL_PORT:3306
     environment:
       MYSQL_DATABASE: 'cityForCitizens'
       MYSQL_PASSWORD: 1488
@@ -27,7 +27,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - $PORT:4000
+      - $LOCAL_PORT:4000
     environment:
       DB_HOST: mysqldb
       DB_PORT: 3306
