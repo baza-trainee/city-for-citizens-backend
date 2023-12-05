@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://185-237-14-12.cloud-xip.com:8082" }],
+  "servers": [{ "url": "http://45.94.157.117:53431" }],
   "tags": [
     {
       "name": "Filters",
