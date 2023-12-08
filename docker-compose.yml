@@ -1,0 +1,49 @@
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysqlcontainer
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:$DB_LOCAL_PORT:3306
+    environment:
+      MYSQL_DATABASE: 'cityForCitizens'
+      MYSQL_PASSWORD: 1488
+      MYSQL_ROOT_PASSWORD: 1488
+      MYSQL_ROOT_HOST: '%'
+      SERVICE_TAGS: prod
+      SERVICE_NAME: mysqldb
+    networks:
+      - internalnet
+
+  app:
+    container_name: appcontainer
+    build: .
+    image: city-for-citizens-backend:0.0.1.RELEASE
+    command: npm run start
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - $LOCAL_PORT:4000
+    environment:
+      DB_HOST: mysqldb
+      DB_PORT: 3306
+      DB_NAME: cityForCitizens
+      DB_USER: root
+      DB_PASSWORD: 1488
+      SERVICE_TAGS: prod
+      SERVICE_NAME: app
+    depends_on:
+      - mysqldb
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
+
+volumes:
+  db: {}
