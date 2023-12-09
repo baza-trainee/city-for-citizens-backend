@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://7l55nnhl-4000.euw.devtunnels.ms" }],
+  "servers": [{ "url": "http://45.94.157.117:53431" }],
   "tags": [
     {
       "name": "Filters",
@@ -20,6 +20,14 @@
     {
       "name": "Events",
       "description": "Events endpoints"
+    },
+    {
+      "name": "Image",
+      "description": "Image endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "Users endpoints"
     }
   ],
 
@@ -38,14 +46,14 @@
             "example": "Kyiv"
           },
           {
-            "name": "date_time",
+            "name": "date",
             "in": "query",
             "type": "string",
             "description": "Event date, time",
             "example": "2023-08-25"
           },
           {
-            "name": "event_type",
+            "name": "eventType",
             "in": "query",
             "type": "string",
             "description": "Event type",
@@ -102,40 +110,6 @@
     },
 
     "/api/events": {
-      "post": {
-        "summary": "Events",
-        "tags": ["Events"],
-        "description": "Create new event",
-        "parameters": [],
-        "requestBody": {
-          "description": "Create new event",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Event created successful",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {}
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
-          }
-        }
-      },
-
       "get": {
         "summary": "Events",
         "tags": ["Events"],
@@ -156,12 +130,17 @@
                         "description": "Event id",
                         "example": 1
                       },
-                      "event_title": {
+                      "idIdentifier": {
+                        "type": "number",
+                        "description": "Event id",
+                        "example": "450e8400-e29b-41d4-a716-446655440000"
+                      },
+                      "eventTitle": {
                         "type": "string",
                         "description": "Event title",
                         "example": "Виставка квітів \"Тюльпани на Співочому полі\""
                       },
-                      "date_time": {
+                      "dateTime": {
                         "type": "string",
                         "description": "Event date, time",
                         "example": "2023-04-15T06:30:45.000Z"
@@ -171,17 +150,17 @@
                         "description": "Event description",
                         "example": "Проводиться приблизно з середини квітня по середину травня, в залежності від погоди. Окрім тюльпанів зазвичай додаються атмосферні тематичні інсталяції по темі, тема щороку нова."
                       },
-                      "event_url": {
+                      "eventUrl": {
                         "type": "string",
                         "description": "Event url",
                         "example": "https://www.facebook.com/spivochepole"
                       },
-                      "event_image": {
+                      "eventImage": {
                         "type": "string",
                         "description": "Event image",
                         "example": ""
                       },
-                      "event_address_id": {
+                      "eventAddressId": {
                         "type": "number",
                         "description": "Event address id",
                         "example": 1
@@ -226,7 +205,7 @@
                           }
                         }
                       },
-                      "event_types": {
+                      "eventTypes": {
                         "type": "array",
                         "items": {
                           "type": "object",
@@ -236,7 +215,7 @@
                               "description": "Event id",
                               "example": 1
                             },
-                            "event_type": {
+                            "eventType": {
                               "type": "string",
                               "description": "Event type",
                               "example": "Квітковий фестиваль"
@@ -264,6 +243,826 @@
             "content": {}
           }
         }
+      },
+
+      "post": {
+        "summary": "Create new event",
+        "tags": ["Events"],
+        "description": "Create new event",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Create new event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "description": "Event locale",
+                    "example": "uk_UA"
+                  },
+                  "idIdentifier": {
+                    "type": "string",
+                    "description": "Event idIdentifier",
+                    "example": "450e8400-e29b-41d4-a716-446655440000"
+                  },
+                  "eventTitle": {
+                    "type": "string",
+                    "description": "Event title",
+                    "example": "В гостях у Петровича44"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Event date",
+                    "example": "2023-04-22"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Event time",
+                    "example": "11:11"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Event description",
+                    "example": "test descr"
+                  },
+                  "eventUrl": {
+                    "type": "string",
+                    "description": "Event url",
+                    "example": "http://halabuda.com"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "Event city",
+                    "example": "Тернопіль"
+                  },
+                  "street": {
+                    "type": "string",
+                    "description": "Event street",
+                    "example": "Степана Будного, 12"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Event notes",
+                    "example": "Біля гаражу Петровича"
+                  },
+                  "coordinates": {
+                    "type": "string",
+                    "description": "Event coordinates",
+                    "example": "49.538873573784386, 25.583378061974138"
+                  },
+                  "eventType": {
+                    "type": "string",
+                    "description": "Event type",
+                    "example": "Посиденьки"
+                  },
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "/public/ffff.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Event id",
+                      "example": 26
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "Event locale",
+                      "example": "uk_UA"
+                    },
+                    "eventTitle": {
+                      "type": "string",
+                      "description": "Event title",
+                      "example": "В гостях у Петровича44"
+                    },
+                    "dateTime": {
+                      "type": "string",
+                      "description": "Event date, time",
+                      "example": "2023-04-22T08:11:00.000Z"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Event description",
+                      "example": "test descr"
+                    },
+                    "eventUrl": {
+                      "type": "string",
+                      "description": "Event url",
+                      "example": "http://halabuda.com"
+                    },
+                    "eventImage": {
+                      "type": "string",
+                      "description": "Event image",
+                      "example": "/public/ffff.jpg"
+                    },
+                    "eventAddressId": {
+                      "type": "number",
+                      "description": "Event address id",
+                      "example": 26
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/events/{id}": {
+      "patch": {
+        "summary": "Update event",
+        "tags": ["Events"],
+        "description": "Update event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "example": "26",
+            "schema": {
+              "minimum": 1
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Update event",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "description": "Event locale",
+                    "example": "uk_UA"
+                  },
+                  "eventTitle": {
+                    "type": "string",
+                    "description": "Event title",
+                    "example": "В гостях у Петровича"
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Event date",
+                    "example": "2023-04-22"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Event time",
+                    "example": "11:11"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Event description",
+                    "example": "test descr"
+                  },
+                  "eventUrl": {
+                    "type": "string",
+                    "description": "Event url",
+                    "example": "http://halabuda.com"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "Event city",
+                    "example": "Тернопіль"
+                  },
+                  "street": {
+                    "type": "string",
+                    "description": "Event street",
+                    "example": "Степана Будного, 12"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Event notes",
+                    "example": "Біля гаражу Петровича"
+                  },
+                  "coordinates": {
+                    "type": "string",
+                    "description": "Event coordinates",
+                    "example": "49.538873573784386, 25.583378061974138"
+                  },
+                  "eventType": {
+                    "type": "string",
+                    "description": "Event type",
+                    "example": "Посиденьки"
+                  },
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "/public/ffff.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Event id",
+                      "example": 26
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "Event locale",
+                      "example": "uk_UA"
+                    },
+                    "eventTitle": {
+                      "type": "string",
+                      "description": "Event title",
+                      "example": "В гостях у Петровича"
+                    },
+                    "dateTime": {
+                      "type": "string",
+                      "description": "Event date, time",
+                      "example": "2023-04-22T08:11:00.000Z"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Event description",
+                      "example": "test descr"
+                    },
+                    "eventUrl": {
+                      "type": "string",
+                      "description": "Event url",
+                      "example": "http://halabuda.com"
+                    },
+                    "eventImage": {
+                      "type": "string",
+                      "description": "Event image",
+                      "example": "/public/ffff.jpg"
+                    },
+                    "eventAddressId": {
+                      "type": "number",
+                      "description": "Event address id",
+                      "example": 26
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+
+      "delete": {
+        "summary": "Delete event",
+        "tags": ["Events"],
+        "description": "Delete event",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "example": "33",
+            "schema": {
+              "minimum": 1
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation, event is deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/image": {
+      "post": {
+        "summary": "Event image",
+        "tags": ["Image"],
+        "description": "Event image",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Event image (multipart/form-data)",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventImage": {
+                    "type": "file",
+                    "format": "binary",
+                    "description": "Event image",
+                    "example": "event1697920509934.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation, event image created",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized (email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+
+      "delete": {
+        "summary": "Delete image",
+        "tags": ["Image"],
+        "description": "Delete image",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Delete image",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "eventImage": {
+                    "type": "string",
+                    "description": "Event image",
+                    "example": "event1697920509934.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation, event image deleted",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized (email or password is wrong)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/registration": {
+      "post": {
+        "summary": "User registration",
+        "tags": ["Users"],
+        "description": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "User registration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Mango"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "Mango12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "description": "accessToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "description": "refreshToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "User id",
+                          "example": 35
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "example": "Mango@gmail.com"
+                        },
+                        "isActivated": {
+                          "type": "boolean",
+                          "description": "User isActivated",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/login": {
+      "post": {
+        "summary": "User login",
+        "tags": ["Users"],
+        "description": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "User login",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "Mango12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "description": "accessToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "description": "refreshToken",
+                      "example": "eyJhbGCI6IkpXVCJ9.eyJpZCI6MTUUsjoxNjk5NDg0NDA4fQ.YXO6uXJiNbIqL2kXIvli7LA"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "User id",
+                          "example": 35
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "example": "Mango@gmail.com"
+                        },
+                        "isActivated": {
+                          "type": "boolean",
+                          "description": "User isActivated",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/logout": {
+      "post": {
+        "summary": "User logout",
+        "tags": ["Users"],
+        "description": "User logout",
+        "parameters": [],
+        "security": [{ "Cookie": [] }]
+      }
+    },
+
+    "/api/activate/{link}": {
+      "get": {
+        "summary": "User activation",
+        "tags": ["Users"],
+        "description": "User activation",
+        "parameters": [],
+        "security": [{ "Cookie": [] }]
+      }
+    },
+
+    "/api/refresh": {
+      "post": {
+        "summary": "Refresh token",
+        "tags": ["Users"],
+        "description": "Refresh token",
+        "parameters": [],
+        "security": [{ "Cookie": [] }]
+      }
+    },
+
+    "/api/users": {
+      "get": {
+        "summary": "Get all users",
+        "tags": ["Users"],
+        "description": "Get all users",
+        "parameters": [],
+        "security": [{ "Cookie": [] }]
+      }
+    },
+
+    "/api/passwordReset/request": {
+      "post": {
+        "summary": "Password reset request",
+        "tags": ["Users"],
+        "description": "Password reset request",
+        "parameters": [],
+        "requestBody": {
+          "description": "Password reset request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "example": "Mango@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Password reset response",
+                      "example": "Password reset link sent to your email account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/passwordReset/reset": {
+      "post": {
+        "summary": "Password reset",
+        "tags": ["Users"],
+        "description": "Password reset",
+        "parameters": [],
+        "requestBody": {
+          "description": "Password reset",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "Token",
+                    "example": "eyJhbGciOiJIkpXVCJ9.eyJpZCI6MSwi2MjA5Nn0.Mko5wxmtYRrHHcRt0"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "description": "new password",
+                    "example": "123454321"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Password reset response",
+                      "example": "Password changed successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/api/users/{userId}": {
+      "delete": {
+        "summary": "Delete user",
+        "tags": ["Users"],
+        "description": "Delete user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "example": "33",
+            "schema": {
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, user is deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "Cookie": {
+        "type": "apiKey",
+        "name": "refreshToken",
+        "in": "header"
       }
     }
   }
