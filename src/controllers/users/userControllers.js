@@ -10,27 +10,27 @@ const {
   deleteUser,
 } = require('../../services/userService');
 
+const cookieConfig = {
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  path: '/api',
+  sameSite: 'none',
+  secure: true,
+};
+
 const registrationCtrl = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   const userData = await registration(name, email, password);
 
-  res.cookie('refreshToken', userData.refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    path: '/api',
-  });
+  res.cookie('refreshToken', userData.refreshToken, cookieConfig);
   return res.json(userData);
 };
 
 const loginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
   const userData = await login(email, password);
-  res.cookie('refreshToken', userData.refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    path: '/api',
-  });
+  res.cookie('refreshToken', userData.refreshToken, cookieConfig);
   return res.json(userData);
 };
 
@@ -54,11 +54,7 @@ const activateCtrl = async (req, res, next) => {
 const refreshCtrl = async (req, res, next) => {
   const { refreshToken } = req.cookies;
   const userData = await refresh(refreshToken);
-  res.cookie('refreshToken', userData.refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    path: '/api',
-  });
+  res.cookie('refreshToken', userData.refreshToken, cookieConfig);
   return res.json(userData);
 };
 

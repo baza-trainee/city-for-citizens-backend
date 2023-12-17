@@ -9,7 +9,7 @@ const getEventsController = ctrlWrapper(async (req, res) => {
   const events = await db.Events.findAll(eventsQuery);
   events.forEach(event => {
     if (event.eventImage) {
-      event.eventImage = `/${process.env.DIR_IMAGES}/${event.eventImage}`;
+      event.eventImage = `${event.eventImage}`;
     }
   });
 
