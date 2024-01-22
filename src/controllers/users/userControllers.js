@@ -48,7 +48,7 @@ const logoutCtrl = async (req, res, next) => {
 const activateCtrl = async (req, res, next) => {
   const activationLink = req.params.link;
   await activate(activationLink);
-  return res.redirect(process.env.CLIENT_URL);
+  return res.redirect(process.env.CLIENT_URL1);
 };
 
 const refreshCtrl = async (req, res, next) => {

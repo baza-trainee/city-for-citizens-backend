@@ -1,4 +1,6 @@
 require('dotenv').config();
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
@@ -9,9 +11,16 @@ const filtersRouter = require('./routes/api/filtersRouters');
 const eventsRouter = require('./routes/api/eventsRouters');
 const imageRouter = require('./routes/api/imageRouters');
 const usersRouters = require('./routes/api/usersRouters');
+const contactsRouters = require('./routes/api/contactsRouters');
+const partnersRouters = require('./routes/api/partnersRouters');
 const { assertDatabaseConnectionOk } = require('./models');
 
 const app = express();
+
+const keys = {
+  key: fs.readFileSync(process.env.KEY_PATH),
+  cert: fs.readFileSync(process.env.CERT_PATH),
+};
 
 const PORT = process.env.PORT || 4000;
 
@@ -45,6 +54,8 @@ app.use(express.static('public'));
 app.use('/api/filters', filtersRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/image', imageRouter);
+app.use('/api/contact-info', contactsRouters);
+app.use('/api/partners', partnersRouters);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', usersRouters);
 
@@ -59,12 +70,8 @@ app.use((err, req, res, next) => {
 
 async function init() {
   await assertDatabaseConnectionOk();
-
-  console.log(`Starting Sequelize on port ${PORT}...`);
-
-  app.listen(PORT, () =>
-    console.log(`Server started at: http://localhost:${PORT}`)
-  );
+  const server = https.createServer(keys, app);
+  server.listen(PORT, () => console.log(`Server started at port:${PORT}`));
 }
 
 init();

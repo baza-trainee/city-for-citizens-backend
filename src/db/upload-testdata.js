@@ -5,6 +5,8 @@ const {
   EventTypeRelationships,
   Users,
   Tokens,
+  Contacts,
+  Partners,
 } = require('../models');
 
 const eventTypes = [
@@ -210,10 +212,10 @@ const eventTypeRelationships = [
 const users = [
   {
     id: 1,
-    name: 'admin',
-    email: 'user@gmail.com',
-    password: '$2b$10$zorcK/1r/pG8VRHxPPWdBuglW60MYq8Bn9TW0aRxufeCEPapGJ4U2',
-    activationLink: '2e1d44b1-cfe1-4944-badd-52ecf780130a',
+    name: 'Admin',
+    email: 'info@misto-fest.fun',
+    password: '$2b$10$GRwx.2R4DmMcATzCBIK8vOdFB79VvoYop9M/HFd2JtAvB7Jb7Xo3W',
+    activationLink: 'bd333151-ab20-436b-8616-90bfe449e778',
     isActivated: true,
   },
 ];
@@ -223,6 +225,27 @@ const tokens = [
     refreshToken:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWN0aXZhdGVkIjpmYWxzZSwiaWF0IjoxNjk4MjY2NjkwLCJleHAiOjE2OTgyNjY3MjB9.su4EG5QYNtpG8CEtvV5AlpGY1VSVCuh6jhTrPbkWfQs',
     userId: 1,
+  },
+];
+const contacts = [
+  {
+    id: 1,
+    email: 'info@misto-fest.fun',
+    phone: '+380675681788',
+  },
+];
+const partners = [
+  {
+    id: 1,
+    name: 'Baza Trainee',
+    link: 'https://baza-trainee.tech',
+    image: 'partner1.jpg',
+  },
+  {
+    id: 2,
+    name: '2Baza Trainee',
+    link: 'https://baza-trainee.tech',
+    image: 'partner2.jpg',
   },
 ];
 
@@ -235,6 +258,8 @@ async function insertData() {
     await EventTypeRelationships.bulkCreate(eventTypeRelationships);
     await Users.bulkCreate(users);
     await Tokens.bulkCreate(tokens);
+    await Contacts.bulkCreate(contacts);
+    await Partners.bulkCreate(partners);
   } catch (error) {
     console.error('Error uploading data to DB:', error);
   }

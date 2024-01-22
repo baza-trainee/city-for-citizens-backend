@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const readline = require('readline');
 const mysql = require('mysql2/promise');
 
 async function createDb() {
@@ -19,12 +19,35 @@ async function createDb() {
     );
 
     if (results.length === 0) {
-      // Если база данных не существует, создаем ее
       await connection.query(`CREATE DATABASE ${dbName};`);
+
       console.info(`Database "${dbName}" successfully created!`);
     } else {
-      // Если база данных существует, выводим сообщение об этом
-      console.info(`Database "${dbName}" already exists.`);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+
+      const answer = await new Promise(resolve => {
+        rl.question(
+          'Database already exists. Do you want to delete and recreate it? (yes/no): ',
+          resolve
+        );
+      });
+
+      if (answer.toLowerCase() === 'yes') {
+        await connection.query(`DROP DATABASE ${dbName};`);
+
+        await connection.query(`CREATE DATABASE ${dbName};`);
+        console.info(
+          `Database "${dbName}" successfully deleted and recreated!`
+        );
+      } else {
+        console.info('Exit without any changes.');
+        process.exit(0);
+      }
+
+      rl.close();
     }
   } catch (error) {
     console.error('Error:', error.message);

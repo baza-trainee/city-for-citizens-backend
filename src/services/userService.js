@@ -46,7 +46,7 @@ async function registration(name, email, password) {
     link: `${process.env.API_URL}/api/activate/${activationLink}`,
     name,
   };
-  const emailSubject = `Activation Account on ${process.env.CLIENT_URL}`;
+  const emailSubject = `Activation account on ${process.env.CLIENT_URL1}`;
 
   await sendMail(email, emailSubject, activationAccountTemplatePath, emailData);
 
@@ -127,10 +127,10 @@ async function passwordResetRequest(email) {
 
   // to, subject, templatePath, templateData
   const emailData = {
-    link: `${process.env.CLIENT_URL}/password-reset?token=${token}`,
+    link: `${process.env.CLIENT_URL1}/password-reset?token=${token}`,
     name: user.name,
   };
-  const emailSubject = `Reset Password on ${process.env.CLIENT_URL}`;
+  const emailSubject = `Reset Password on ${process.env.CLIENT_URL1}`;
 
   await sendMail(
     email,
@@ -159,7 +159,7 @@ async function passwordReset(token, newPassword) {
   const emailData = {
     name: user.name,
   };
-  const emailSubject = `Your Password has been Updated on ${process.env.CLIENT_URL}`;
+  const emailSubject = `Your Password has been Updated on ${process.env.CLIENT_URL1}`;
 
   await sendMail(
     userDto.email,
