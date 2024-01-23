@@ -21,6 +21,8 @@ const { EventAddress, EventTypes, Events, EventTypeRelationships } =
   require('./eventsModels')(sequelize, Sequelize);
 const { Users } = require('./usersModel')(sequelize, Sequelize);
 const { Tokens } = require('./tokenModel')(sequelize, Sequelize);
+const { Contacts } = require('./contactsModel')(sequelize, Sequelize);
+const { Partners } = require('./partnersModel')(sequelize, Sequelize);
 
 Events.belongsToMany(EventTypes, { through: EventTypeRelationships });
 EventTypes.belongsToMany(Events, { through: EventTypeRelationships });
@@ -30,12 +32,12 @@ Tokens.belongsTo(Users, { foreignKey: 'userId' });
 // EventAddress.hasMany(Events, { onDelete: 'CASCADE' });
 
 async function assertDatabaseConnectionOk() {
-  console.log(`Checking database connection...`);
+  console.log(`Checking MySQL database connection...`);
   try {
     await sequelize.authenticate();
-    console.log('Database connection OK!');
+    console.log('\x1b[32m%s\x1b[0m', 'Database connection OK!');
   } catch (error) {
-    console.log('Unable to connect to the database:');
+    console.log('\x1b[31m%s\x1b[0m', 'Unable to connect to the database:');
     console.log(error.message);
     process.exit(1);
   }
@@ -50,5 +52,7 @@ module.exports = {
   EventTypeRelationships,
   Users,
   Tokens,
+  Contacts,
+  Partners,
   assertDatabaseConnectionOk,
 };

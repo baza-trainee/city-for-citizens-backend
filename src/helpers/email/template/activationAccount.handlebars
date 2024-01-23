@@ -1,12 +1,14 @@
 
 <html>
 <head>
-    <title>'Activation account on ' + process.env.CLIENT_URL</title>
+    <title>'Activation account on ' + ${process.env.CLIENT_URL1}</title>
 </head>
 <body>
     <h1>Hello, {{name}}!</h1>
      <p>You have successfully registered.</p>
     <p>For activate your account click link below</p>
-   <a href="${link}">Activate account</a>
+   <a href="{{ link }}">Activate account</a>
+    <p>If you do not see the link, please copy and paste it into your browser</p>
+    <p>{{ link }}</p>
 </body>
 </html>

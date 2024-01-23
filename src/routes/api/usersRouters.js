@@ -26,11 +26,11 @@ const {
   deleteUserCtrl,
 } = require('../../controllers/users/userControllers');
 
-router.post(
-  '/registration',
-  validate(registrationSchema, ValidationTypes.BODY),
-  ctrlWrapper(registrationCtrl)
-);
+// router.post(
+//   '/registration',
+//   validate(registrationSchema, ValidationTypes.BODY),
+//   ctrlWrapper(registrationCtrl)
+// );
 router.post(
   '/login',
   validate(loginSchema, ValidationTypes.BODY),

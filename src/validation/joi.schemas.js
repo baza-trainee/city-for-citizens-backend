@@ -104,6 +104,39 @@ const userIdSchema = Joi.object({
   }),
 });
 
+const contactsSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    'string.email': 'Email is not valid',
+    'any.required': 'Missing required field email',
+  }),
+  phone: Joi.string()
+    .regex(/^\+?[0-9]{12}$/)
+    .messages({ 'string.pattern.base': `Phone number must have 12 digits.` })
+    .required(),
+});
+
+const partnerSchema = Joi.object({
+  name: Joi.string().trim().min(2).max(255).required().messages({
+    'string.base': 'Name must be a string',
+    'string.empty': 'Name is required',
+    'string.min': 'Name should have a minimum length of {#limit}',
+    'string.max': 'Name should have a maximum length of {#limit}',
+    'any.required': 'Name is required',
+  }),
+  link: Joi.string()
+    .uri({ scheme: ['http', 'https'] })
+    .allow('')
+    .messages({
+      'string.uri': 'Link must be a valid URL',
+    }),
+  image: Joi.string()
+    .regex(/^[a-zA-Z0-9_-]+\.[a-zA-Z]{2,4}$/)
+    .messages({
+      'string.pattern.base': 'Image should be a valid filename with extension',
+      'any.required': 'Image is required',
+    }),
+});
+
 module.exports = {
   registrationSchema,
   loginSchema,
@@ -115,4 +148,6 @@ module.exports = {
   eventSchema,
   checkIdSchema,
   userIdSchema,
+  contactsSchema,
+  partnerSchema,
 };
