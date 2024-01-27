@@ -2,7 +2,7 @@ const { Op, literal } = require('sequelize');
 const db = require('../models');
 
 const getEventsQuery = (query, tableAttributes = {}) => {
-  const searchQuery = query.search;
+  const searchQuery = query.search || '';
   const idQuery = query.id ? query.id.split(',') : [];
   const localeQuery = query.locale;
   const citiesQuery = query.city ? query.city.split(',') : [];
@@ -14,6 +14,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
 
   return {
     attributes: tableAttributes.eventsAttributes || null,
+
     where: {
       [Op.or]: [
         {
@@ -39,6 +40,8 @@ const getEventsQuery = (query, tableAttributes = {}) => {
         },
       }),
     },
+    offset: query.offset,
+    limit: query.limit,
     include: [
       {
         model: db.EventAddress,

@@ -63,10 +63,10 @@ router.post(
   ctrlWrapper(passwordResetCtrl)
 );
 
-router.delete(
-  '/users/:userId',
-  authMiddleware,
-  validate(userIdSchema, ValidationTypes.PARAMS),
-  ctrlWrapper(deleteUserCtrl)
-);
+// router.delete(
+//   '/users/:userId',
+//   authMiddleware,
+//   validate(userIdSchema, ValidationTypes.PARAMS),
+//   ctrlWrapper(deleteUserCtrl)
+// );
 module.exports = router;

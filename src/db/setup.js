@@ -7,7 +7,7 @@ async function setup() {
     await createDb();
     await createTables();
     await insertData();
-    console.log('All done!');
+    console.log('\x1b[32m%s\x1b[0m', 'All successfully done!');
   } catch (error) {
     console.error('Error:', error.message);
     process.exit(1);

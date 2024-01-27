@@ -23,6 +23,7 @@ const { Users } = require('./usersModel')(sequelize, Sequelize);
 const { Tokens } = require('./tokenModel')(sequelize, Sequelize);
 const { Contacts } = require('./contactsModel')(sequelize, Sequelize);
 const { Partners } = require('./partnersModel')(sequelize, Sequelize);
+const { Documents } = require('./documentsModel')(sequelize, Sequelize);
 
 Events.belongsToMany(EventTypes, { through: EventTypeRelationships });
 EventTypes.belongsToMany(Events, { through: EventTypeRelationships });
@@ -54,5 +55,6 @@ module.exports = {
   Tokens,
   Contacts,
   Partners,
+  Documents,
   assertDatabaseConnectionOk,
 };

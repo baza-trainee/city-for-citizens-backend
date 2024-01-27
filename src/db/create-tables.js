@@ -7,6 +7,7 @@ const {
   Tokens,
   Contacts,
   Partners,
+  Documents,
 } = require('../models');
 
 async function createTables() {
@@ -20,6 +21,7 @@ async function createTables() {
     await Tokens.sync({ force: false });
     await Contacts.sync({ force: false });
     await Partners.sync({ force: false });
+    await Documents.sync({ force: false });
   } catch (error) {
     console.error('Error creating tables:', error);
   }

@@ -9,10 +9,12 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
 const filtersRouter = require('./routes/api/filtersRouters');
 const eventsRouter = require('./routes/api/eventsRouters');
+const eventTypesRouter = require('./routes/api/eventTypesRouter');
 const imageRouter = require('./routes/api/imageRouters');
 const usersRouters = require('./routes/api/usersRouters');
 const contactsRouters = require('./routes/api/contactsRouters');
 const partnersRouters = require('./routes/api/partnersRouters');
+const documentsRouters = require('./routes/api/documentsRouters');
 const { assertDatabaseConnectionOk } = require('./models');
 
 const app = express();
@@ -53,9 +55,11 @@ app.use(express.static('public'));
 
 app.use('/api/filters', filtersRouter);
 app.use('/api/events', eventsRouter);
+app.use('/api/event-types', eventTypesRouter);
 app.use('/api/image', imageRouter);
 app.use('/api/contact-info', contactsRouters);
 app.use('/api/partners', partnersRouters);
+app.use('/api/documents', documentsRouters);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', usersRouters);
 

@@ -7,6 +7,7 @@ const {
   Tokens,
   Contacts,
   Partners,
+  Documents,
 } = require('../models');
 
 const eventTypes = [
@@ -248,6 +249,18 @@ const partners = [
     image: 'partner2.jpg',
   },
 ];
+const documents = [
+  {
+    id: 1,
+    name: 'Політика конфіденційності',
+    file: 'privacy-policy.pdf',
+  },
+  {
+    id: 2,
+    name: 'Правила користування сайтом',
+    file: 'site-rules.pdf',
+  },
+];
 
 async function insertData() {
   try {
@@ -260,6 +273,7 @@ async function insertData() {
     await Tokens.bulkCreate(tokens);
     await Contacts.bulkCreate(contacts);
     await Partners.bulkCreate(partners);
+    await Documents.bulkCreate(documents);
   } catch (error) {
     console.error('Error uploading data to DB:', error);
   }

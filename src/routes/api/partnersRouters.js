@@ -15,7 +15,7 @@ router
   .get(getPartnersController)
   .post(
     authMiddleware,
-    uploadSingleFile('file'),
+    uploadSingleFile('image'),
     validate(partnerSchema, ValidationTypes.BODY),
     createPartnerController
   );
@@ -24,7 +24,7 @@ router
   .route('/:id')
   .patch(
     authMiddleware,
-    uploadSingleFile('file'),
+    uploadSingleFile('image'),
     validate(partnerSchema, ValidationTypes.BODY),
     updatePartnerController
   )

@@ -4,16 +4,23 @@ const { getEventsQuery } = require('../../services/getEventsQuery');
 
 const getEventsController = ctrlWrapper(async (req, res) => {
   const { query } = req;
+
+  const page = parseInt(query.page) || 1;
+  const limit = parseInt(query.limit) || 10;
+  query.limit = limit;
+  query.offset = (page - 1) * limit;
+
   const eventsQuery = getEventsQuery(query);
 
-  const events = await db.Events.findAll(eventsQuery);
-  events.forEach(event => {
-    if (event.eventImage) {
-      event.eventImage = `${event.eventImage}`;
-    }
-  });
+  const { count, rows: events } = await db.Events.findAndCountAll(eventsQuery);
 
-  res.status(200).json(events);
+  const pageInfo = {
+    totalItems: count,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+  };
+
+  res.status(200).json({ events, ...pageInfo });
 });
 
 module.exports = getEventsController;
