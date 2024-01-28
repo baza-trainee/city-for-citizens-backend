@@ -1,25 +1,6 @@
-/**
- * @swagger
- * definition:
- *   Info:
- *     properties:
- *       title:
- *         type: string
- *       version:
- *         type: string
- */
-
-/**
- * @swagger
- * securityDefinitions:
- *   Bearer:
- *     type: apiKey
- *     in: header
- *     name: Authorization
- */
-
 const swaggerOptions = {
   swaggerDefinition: {
+    openapi: '3.0.0',
     info: {
       title: 'misto-fest.fun API',
       version: '1.0.0',
@@ -34,7 +15,11 @@ const swaggerOptions = {
       },
     },
     security: [{ Bearer: [] }],
-    servers: [{ url: 'https://localhost:4000/api' }],
+    servers: [
+      { url: 'https://45.94.157.117:53431/api' },
+      { url: 'https://city-backend-45go.onrender.com/api' },
+      { url: 'https://localhost:4000/api' },
+    ],
     tags: [
       { name: 'Filters' },
       { name: 'Events' },
@@ -45,7 +30,6 @@ const swaggerOptions = {
       { name: 'Documents' },
       { name: 'EventTypes' },
     ],
-    openapi: '3.0.0',
   },
   apis: ['./src/routes/api/*.js'],
 };

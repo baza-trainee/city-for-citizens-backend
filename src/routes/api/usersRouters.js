@@ -124,7 +124,6 @@ module.exports = router;
  *       content:
  *         application/json:
  *           example:
- *             name: "admin"
  *             email: "user@gmail.com"
  *             password: "Mangal54"
  *     responses:
