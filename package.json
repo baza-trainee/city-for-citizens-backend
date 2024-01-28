@@ -30,6 +30,7 @@
     "nodemailer": "^6.9.7",
     "sequelize": "^6.33.0",
     "sharp": "^0.32.6",
+    "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
   },
