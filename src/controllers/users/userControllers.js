@@ -8,6 +8,7 @@ const {
   passwordResetRequest,
   passwordReset,
   deleteUser,
+  changePassword,
 } = require('../../services/userService');
 
 const cookieConfig = {
@@ -89,6 +90,15 @@ const deleteUserCtrl = async (req, res, next) => {
   return res.status(204).json({ message: 'User successfully deleted' });
 };
 
+const changePasswordCtrl = async (req, res, next) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const adminId = req.user.id;
+
+  await changePassword(oldPassword, newPassword, confirmPassword, adminId);
+
+  return res.status(200).json({ message: 'Password changed successfully' });
+};
+
 module.exports = {
   registrationCtrl,
   loginCtrl,
@@ -99,4 +109,5 @@ module.exports = {
   passwordResetRequestCtrl,
   passwordResetCtrl,
   deleteUserCtrl,
+  changePasswordCtrl,
 };

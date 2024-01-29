@@ -158,6 +158,19 @@ const eventTypeSchema = Joi.object({
   locale: Joi.string(),
 });
 
+const passwordChangeSchema = Joi.object({
+  oldPassword: Joi.string().required(),
+  newPassword: Joi.string()
+    .min(8)
+    .max(32)
+    .required()
+    .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/)
+    .message(
+      'The new password must contain at least one number, one lowercase letter, and one uppercase letter'
+    ),
+  confirmPassword: Joi.ref('newPassword'),
+}).with('newPassword', 'confirmPassword');
+
 module.exports = {
   registrationSchema,
   loginSchema,
@@ -173,4 +186,5 @@ module.exports = {
   partnerSchema,
   documentSchema,
   eventTypeSchema,
+  passwordChangeSchema,
 };

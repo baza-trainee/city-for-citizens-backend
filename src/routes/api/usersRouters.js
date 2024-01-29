@@ -3,19 +3,20 @@ const router = express.Router();
 const validate = require('../../validation/validation');
 const {
   loginSchema,
-  registrationSchema,
+  // registrationSchema,
   passwordResetRequestSchema,
   passwordResetSchema,
   refreshTokenSchema,
   activationLinkSchema,
-  userIdSchema,
+  // userIdSchema,
+  passwordChangeSchema,
 } = require('../../validation/joi.schemas');
 const ValidationTypes = require('../../validation/validationTypes');
 
 const authMiddleware = require('../../middlewares/authMiddleware');
 const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const {
-  registrationCtrl,
+  // registrationCtrl,
   loginCtrl,
   logoutCtrl,
   activateCtrl,
@@ -23,7 +24,8 @@ const {
   getUsersCtrl,
   passwordResetRequestCtrl,
   passwordResetCtrl,
-  deleteUserCtrl,
+  // deleteUserCtrl,
+  changePasswordCtrl,
 } = require('../../controllers/users/userControllers');
 
 // router.post(
@@ -61,6 +63,11 @@ router.post(
   '/passwordReset/reset',
   validate(passwordResetSchema, ValidationTypes.BODY),
   ctrlWrapper(passwordResetCtrl)
+);
+router.post(
+  '/password/change',
+  validate(passwordChangeSchema, ValidationTypes.BODY),
+  ctrlWrapper(changePasswordCtrl)
 );
 
 // router.delete(
@@ -330,6 +337,69 @@ module.exports = router;
  *       '404':
  *         description: Not found
  *         content: {}
+ */
+
+/**
+ * @swagger
+ * /password/change:
+ *   post:
+ *     summary: Change admin password
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []  # Use the same security name as defined in your Swagger securityDefinitions
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PasswordChange'
+ *     responses:
+ *       '200':
+ *         description: Password changed successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Password changed successfully
+ *       '400':
+ *         description: Bad request, invalid old password or new passwords do not match
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Invalid old password or new passwords do not match
+ *       '401':
+ *         description: Unauthorized, authentication failure
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Unauthorized
+ *       '404':
+ *         description: Admin not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Admin not found
+ *
+ * components:
+ *   schemas:
+ *     PasswordChange:
+ *       type: object
+ *       properties:
+ *         oldPassword:
+ *           type: string
+ *           description: Old password
+ *           example: "oldPassword123"
+ *         newPassword:
+ *           type: string
+ *           description: New password
+ *           example: "newPassword123"
+ *         confirmPassword:
+ *           type: string
+ *           description: Confirm new password
+ *           example: "newPassword123"
+ *       required:
+ *         - oldPassword
+ *         - newPassword
+ *         - confirmPassword
  */
 
 /**
