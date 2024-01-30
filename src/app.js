@@ -5,14 +5,17 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json');
+const swaggerOptions = require('../swaggerOptions');
 const filtersRouter = require('./routes/api/filtersRouters');
 const eventsRouter = require('./routes/api/eventsRouters');
+const eventTypesRouter = require('./routes/api/eventTypesRouter');
 const imageRouter = require('./routes/api/imageRouters');
 const usersRouters = require('./routes/api/usersRouters');
 const contactsRouters = require('./routes/api/contactsRouters');
 const partnersRouters = require('./routes/api/partnersRouters');
+const documentsRouters = require('./routes/api/documentsRouters');
 const { assertDatabaseConnectionOk } = require('./models');
 
 const app = express();
@@ -25,6 +28,8 @@ const keys = {
 const PORT = process.env.PORT || 4000;
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+
+const specs = swaggerJsdoc(swaggerOptions);
 
 app.use(logger(formatsLogger));
 app.use(cookieParser());
@@ -53,10 +58,12 @@ app.use(express.static('public'));
 
 app.use('/api/filters', filtersRouter);
 app.use('/api/events', eventsRouter);
+app.use('/api/event-types', eventTypesRouter);
 app.use('/api/image', imageRouter);
-app.use('/api/contact-info', contactsRouters);
+app.use('/api/contacts', contactsRouters);
 app.use('/api/partners', partnersRouters);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api/documents', documentsRouters);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api', usersRouters);
 
 app.use((req, res) => {

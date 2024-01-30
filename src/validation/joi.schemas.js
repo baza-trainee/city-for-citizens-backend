@@ -136,6 +136,40 @@ const partnerSchema = Joi.object({
       'any.required': 'Image is required',
     }),
 });
+const documentSchema = Joi.object({
+  name: Joi.string().trim().min(2).max(255).required().messages({
+    'string.base': 'Name must be a string',
+    'string.empty': 'Name is required',
+    'string.min': 'Name should have a minimum length of {#limit}',
+    'string.max': 'Name should have a maximum length of {#limit}',
+    'any.required': 'Name is required',
+  }),
+  file: Joi.string(),
+});
+
+const eventTypeSchema = Joi.object({
+  eventType: Joi.string()
+    .regex(/^[\p{L}]+$/u)
+    .required()
+    .messages({
+      'string.pattern.base': 'eventType must be a string with only letters',
+      'any.required': 'eventType is required',
+    }),
+  locale: Joi.string(),
+});
+
+const passwordChangeSchema = Joi.object({
+  oldPassword: Joi.string().required(),
+  newPassword: Joi.string()
+    .min(8)
+    .max(32)
+    .required()
+    .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/)
+    .message(
+      'The new password must contain at least one number, one lowercase letter, and one uppercase letter'
+    ),
+  confirmPassword: Joi.ref('newPassword'),
+}).with('newPassword', 'confirmPassword');
 
 module.exports = {
   registrationSchema,
@@ -150,4 +184,7 @@ module.exports = {
   userIdSchema,
   contactsSchema,
   partnerSchema,
+  documentSchema,
+  eventTypeSchema,
+  passwordChangeSchema,
 };

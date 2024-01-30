@@ -5,7 +5,6 @@ const getPartnersController = ctrlWrapper(async (req, res) => {
   const { id } = req.query;
 
   const partners = await db.Partners.findAll({ where: { ...(id && { id }) } });
-  console.log('🚀 ~ getPartnersController ~ partners:', partners);
 
   if (partners.length === 0) {
     return res.status(404).json({ message: 'Not found' });

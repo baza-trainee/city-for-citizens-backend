@@ -180,6 +180,35 @@ async function deleteUser(userId) {
   await removeTokenByUserId(userId);
 }
 
+async function changePassword(
+  oldPassword,
+  newPassword,
+  confirmPassword,
+  adminId
+) {
+  const admin = await Users.findByPk(adminId);
+  if (!admin) {
+    throw HttpError(404, 'Admin not found');
+  }
+
+  const isOldPasswordValid = await bcrypt.compare(oldPassword, admin.password);
+  if (!isOldPasswordValid) {
+    throw HttpError(400, 'Invalid old password');
+  }
+
+  if (newPassword !== confirmPassword) {
+    throw HttpError(400, 'New password and confirm password do not match');
+  }
+
+  const hashedNewPassword = await bcrypt.hash(
+    newPassword,
+    Number(process.env.SALT_ROUNDS)
+  );
+  admin.password = hashedNewPassword;
+
+  await admin.save();
+}
+
 module.exports = {
   registration,
   activate,
@@ -190,4 +219,5 @@ module.exports = {
   passwordResetRequest,
   passwordReset,
   deleteUser,
+  changePassword,
 };
