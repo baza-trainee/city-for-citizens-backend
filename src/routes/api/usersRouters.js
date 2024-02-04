@@ -66,6 +66,7 @@ router.post(
 );
 router.post(
   '/password/change',
+  authMiddleware,
   validate(passwordChangeSchema, ValidationTypes.BODY),
   ctrlWrapper(changePasswordCtrl)
 );
