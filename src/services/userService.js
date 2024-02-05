@@ -193,7 +193,7 @@ async function changePassword(
 
   const isOldPasswordValid = await bcrypt.compare(oldPassword, admin.password);
   if (!isOldPasswordValid) {
-    throw HttpError(400, 'Invalid old password');
+    throw HttpError(400, 'Старий пароль введено невірно');
   }
 
   if (newPassword !== confirmPassword) {
