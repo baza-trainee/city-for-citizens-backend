@@ -10,7 +10,7 @@ async function updateContact(updateData) {
   const existingContact = await Contacts.findOne();
 
   if (!existingContact) {
-    throw new HttpError('Contact not found', 404);
+    throw new HttpError(404, 'Contact not found');
   }
 
   const updatedContact = await existingContact.update(updateData);

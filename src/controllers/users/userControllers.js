@@ -96,7 +96,9 @@ const changePasswordCtrl = async (req, res, next) => {
 
   await changePassword(oldPassword, newPassword, confirmPassword, adminId);
 
-  return res.status(200).json({ message: 'Password changed successfully' });
+  return res
+    .status(200)
+    .json({ status: 'success', message: 'Password changed successfully' });
 };
 
 module.exports = {
