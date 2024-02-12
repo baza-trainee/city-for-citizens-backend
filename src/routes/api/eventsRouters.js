@@ -145,7 +145,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/events/{id}:
+ * /events/{id}:
  *   patch:
  *     summary: Update event
  *     tags:

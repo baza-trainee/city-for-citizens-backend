@@ -20,7 +20,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/image:
+ * /image:
  *   post:
  *     summary: Event image
  *     tags: [Image]
