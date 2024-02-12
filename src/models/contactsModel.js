@@ -11,13 +11,17 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      phone: {
+      firstPhone: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      secondPhone: {
         type: Sequelize.STRING,
         allowNull: false,
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
     }
   );
 

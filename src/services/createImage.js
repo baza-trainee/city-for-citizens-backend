@@ -41,7 +41,7 @@ const createImage = (req, res) => {
       }
 
       sharp(file.buffer)
-        .resize(788, (788 / 4) * 3, {
+        .resize(1280, (1280 / 4) * 3, {
           fit: sharp.fit.outside,
           withoutEnlargement: true,
         })

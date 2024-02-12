@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getEventsController = require('../../controllers/events/getEventsController');
+const searchEventsController = require('../../controllers/events/searchEventsController');
 const createEventController = require('../../controllers/events/createEventController');
 const updateEventController = require('../../controllers/events/updateEventController');
 const deleteEventController = require('../../controllers/events/deleteEventController');
@@ -31,6 +32,7 @@ router
     validate(checkIdSchema, ValidationTypes.PARAMS),
     deleteEventController
   );
+router.route('/search').get(searchEventsController);
 
 module.exports = router;
 
@@ -41,16 +43,63 @@ module.exports = router;
  *     summary: Retrieve a list of events
  *     tags: [Events]
  *     description: Get a list of events
- *     parameters: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The maximum number of events per page
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of event IDs
+ *       - in: query
+ *         name: locale
+ *         schema:
+ *           type: string
+ *         description: Locale filter for events
+ *       - in: query
+ *         name: city
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of cities to filter events by
+ *       - in: query
+ *         name: date
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of dates in YYYY-MM-DD format to filter events by
+ *       - in: query
+ *         name: eventType
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of event types to filter events by
  *     responses:
  *       '200':
  *         description: Successful operation
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/definitions/Event'
+ *               type: object
+ *               properties:
+ *                 events:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/definitions/Event'
+ *                 totalItems:
+ *                   type: integer
+ *                   description: Total number of events matching the query
+ *                 totalPages:
+ *                   type: integer
+ *                   description: Total number of pages for pagination
+ *                 currentPage:
+ *                   type: integer
+ *                   description: Current page number
  *       '400':
  *         description: Bad request
  *         content: {}
@@ -96,7 +145,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/events/{id}:
+ * /events/{id}:
  *   patch:
  *     summary: Update event
  *     tags:
@@ -304,4 +353,37 @@ module.exports = router;
  *         type: string
  *         description: Event locale
  *         example: "uk_UA"
+ */
+
+/**
+ * @swagger
+ * /events/search:
+ *   get:
+ *     summary: Search for events
+ *     tags: [Events]
+ *     description: Search for events based on a query string
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: The query string to search for events
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 events:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/definitions/Event'
+ *       '400':
+ *         description: Bad request
+ *         content: {}
+ *       '404':
+ *         description: Not found
+ *         content: {}
  */

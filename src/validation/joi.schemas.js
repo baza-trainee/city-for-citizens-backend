@@ -75,7 +75,11 @@ const eventSchema = Joi.object({
     .regex(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
     .required(),
   description: Joi.string().required(),
-  eventUrl: Joi.string().required(),
+  url: Joi.string()
+    .uri({
+      scheme: ['http', 'https'],
+    })
+    .optional(),
   city: Joi.string().required(),
   street: Joi.string().required(),
   notes: Joi.string().optional(),
@@ -171,6 +175,10 @@ const passwordChangeSchema = Joi.object({
   confirmPassword: Joi.ref('newPassword'),
 }).with('newPassword', 'confirmPassword');
 
+const searchQuerySchema = Joi.object({
+  query: Joi.string().required().min(1).max(255),
+});
+
 module.exports = {
   registrationSchema,
   loginSchema,
@@ -187,4 +195,5 @@ module.exports = {
   documentSchema,
   eventTypeSchema,
   passwordChangeSchema,
+  searchQuerySchema,
 };
