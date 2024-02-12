@@ -175,6 +175,10 @@ const passwordChangeSchema = Joi.object({
   confirmPassword: Joi.ref('newPassword'),
 }).with('newPassword', 'confirmPassword');
 
+const searchQuerySchema = Joi.object({
+  query: Joi.string().required().min(1).max(255),
+});
+
 module.exports = {
   registrationSchema,
   loginSchema,
@@ -191,4 +195,5 @@ module.exports = {
   documentSchema,
   eventTypeSchema,
   passwordChangeSchema,
+  searchQuerySchema,
 };

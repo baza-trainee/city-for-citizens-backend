@@ -380,27 +380,6 @@ module.exports = router;
  *             example:
  *               error: Admin not found
  *
- * components:
- *   schemas:
- *     PasswordChange:
- *       type: object
- *       properties:
- *         oldPassword:
- *           type: string
- *           description: Old password
- *           example: "oldPassword123"
- *         newPassword:
- *           type: string
- *           description: New password
- *           example: "newPassword123"
- *         confirmPassword:
- *           type: string
- *           description: Confirm new password
- *           example: "newPassword123"
- *       required:
- *         - oldPassword
- *         - newPassword
- *         - confirmPassword
  */
 
 /**
