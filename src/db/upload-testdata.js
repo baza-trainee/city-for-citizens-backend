@@ -232,7 +232,8 @@ const contacts = [
   {
     id: 1,
     email: 'info@misto-fest.fun',
-    phone: '+380675681788',
+    firstPhone: '+380636286630',
+    secondPhone: '+380675681788',
   },
 ];
 const partners = [

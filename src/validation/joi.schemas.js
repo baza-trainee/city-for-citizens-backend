@@ -75,7 +75,11 @@ const eventSchema = Joi.object({
     .regex(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
     .required(),
   description: Joi.string().required(),
-  eventUrl: Joi.string().required(),
+  url: Joi.string()
+    .uri({
+      scheme: ['http', 'https'],
+    })
+    .optional(),
   city: Joi.string().required(),
   street: Joi.string().required(),
   notes: Joi.string().optional(),
