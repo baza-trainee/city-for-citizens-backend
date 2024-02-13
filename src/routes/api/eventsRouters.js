@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const getEventsController = require('../../controllers/events/getEventsController');
+const {
+  getEventsController,
+  getEventsById,
+} = require('../../controllers/events/getEventsController');
 const searchEventsController = require('../../controllers/events/searchEventsController');
 const createEventController = require('../../controllers/events/createEventController');
 const updateEventController = require('../../controllers/events/updateEventController');
@@ -21,6 +24,7 @@ router
 
 router
   .route('/:id')
+  .get(validate(checkIdSchema, ValidationTypes.PARAMS), getEventsById)
   .patch(
     authMiddleware,
     validate(checkIdSchema, ValidationTypes.PARAMS),
@@ -32,7 +36,7 @@ router
     validate(checkIdSchema, ValidationTypes.PARAMS),
     deleteEventController
   );
-router.route('/search').get(searchEventsController);
+router.route('/search/find').get(searchEventsController);
 
 module.exports = router;
 
@@ -357,33 +361,261 @@ module.exports = router;
 
 /**
  * @swagger
- * /events/search:
+ * /events/{id}:
  *   get:
- *     summary: Search for events
+ *     summary: Get information about events by their identifiers
  *     tags: [Events]
- *     description: Search for events based on a query string
+ *     description: >
+ *       Returns information about two events based on their identifiers.
+ *       Both events should have the same idIdentifier to identify the event in different languages.
  *     parameters:
- *       - in: query
- *         name: query
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Event identifier.
  *         schema:
- *           type: string
- *         description: The query string to search for events
+ *           type: integer
  *     responses:
  *       '200':
- *         description: Successful operation
+ *         description: Successful request. Information about two events is returned.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ *               example:
+ *                 - id: 1
+ *                   idIdentifier: "550e8400-e29b-41d4-a716-446655440000"
+ *                   eventTitle: "Exhibition of Tulips at Singing Field"
+ *                   dateTime: "2023-04-15T06:30:45.000Z"
+ *                   description: "Usually held from mid-April to mid-May, depending on the weather. In addition to tulips, atmospheric thematic installations are usually added, with a new theme every year."
+ *                   eventUrl: "https://www.facebook.com/singingfield"
+ *                   eventImage: ""
+ *                   eventAddressId: 1
+ *                   locale: "en_US"
+ *                   eventAddress:
+ *                     id: 1
+ *                     city: "Kyiv"
+ *                     street: "Lavrska St, 31"
+ *                     notes: "The Singing Field is located on the Pechersk Hills on the right bank of the Dnipro River, near the museum-monument Motherland."
+ *                     coordinates: "50.4302484,30.4936464"
+ *                     locale: "en_US"
+ *                   eventTypes:
+ *                     - id: 1
+ *                       eventType: "Flower Festival"
+ *                       locale: "en_US"
+ *                 - id: 2
+ *                   idIdentifier: "550e8400-e29b-41d4-a716-446655440001"
+ *                   eventTitle: "Example Event Title"
+ *                   dateTime: "2023-05-20T08:00:00.000Z"
+ *                   description: "Example event description."
+ *                   eventUrl: ""
+ *                   eventImage: ""
+ *                   eventAddressId: 2
+ *                   locale: "en_US"
+ *                   eventAddress:
+ *                     id: 2
+ *                     city: "Example City"
+ *                     street: "Example Street, 123"
+ *                     notes: "Example address notes."
+ *                     coordinates: "51.1234,45.6789"
+ *                     locale: "en_US"
+ *                   eventTypes:
+ *                     - id: 2
+ *                       eventType: "Example Event Type"
+ *                       locale: "en_US"
+ *       '404':
+ *         description: Event not found.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *       '500':
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Event:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Event identifier.
+ *         idIdentifier:
+ *           type: string
+ *           description: Event identifier for identifying the event in different languages.
+ *         eventTitle:
+ *           type: string
+ *           description: Event title.
+ *         dateTime:
+ *           type: string
+ *           format: date-time
+ *           description: Date and time of the event.
+ *         description:
+ *           type: string
+ *           description: Event description.
+ *         eventUrl:
+ *           type: string
+ *           description: Event URL.
+ *         eventImage:
+ *           type: string
+ *           description: Event image.
+ *         eventAddressId:
+ *           type: integer
+ *           description: Event address identifier.
+ *         locale:
+ *           type: string
+ *           description: Event locale.
+ *         eventAddress:
+ *           $ref: '#/components/schemas/EventAddress'
+ *         eventTypes:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/EventType'
+ *     EventAddress:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Address identifier.
+ *         city:
+ *           type: string
+ *           description: City.
+ *         street:
+ *           type: string
+ *           description: Street.
+ *         notes:
+ *           type: string
+ *           description: Address notes.
+ *         coordinates:
+ *           type: string
+ *           description: Address coordinates.
+ *         locale:
+ *           type: string
+ *           description: Address locale.
+ *     EventType:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Event type identifier.
+ *         eventType:
+ *           type: string
+ *           description: Event type.
+ *         locale:
+ *           type: string
+ *           description: Event type locale.
+ */
+
+/**
+ * @swagger
+ * /events/search/find:
+ *   get:
+ *     summary: Search events
+ *     tags: [Events]
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: String to search for events
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number of results
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of results per page
+ *     responses:
+ *       200:
+ *         description: Successful response, returns a list of events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalPages:
+ *                   type: integer
+ *                   description: Total number of pages
+ *                 page:
+ *                   type: integer
+ *                   description: Current page
+ *                 limit:
+ *                   type: integer
+ *                   description: Results limit per page
  *                 events:
  *                   type: array
  *                   items:
- *                     $ref: '#/definitions/Event'
- *       '400':
- *         description: Bad request
- *         content: {}
- *       '404':
- *         description: Not found
- *         content: {}
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: Unique identifier of the event
+ *                       idIdentifier:
+ *                         type: string
+ *                         description: Unique identifier of the event in UUID format
+ *                       eventTitle:
+ *                         type: string
+ *                         description: Title of the event
+ *                       dateTime:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Date and time of the event
+ *                       description:
+ *                         type: string
+ *                         description: Description of the event
+ *                       eventUrl:
+ *                         type: string
+ *                         description: URL of the event
+ *                       eventImage:
+ *                         type: string
+ *                         description: URL of the event image
+ *                       eventAddressId:
+ *                         type: integer
+ *                         description: Unique identifier of the event address
+ *                       locale:
+ *                         type: string
+ *                         description: Locale of the event
+ *                       eventAddress:
+ *                         type: object
+ *                         properties:
+ *                           city:
+ *                             type: string
+ *                             description: City of the event
+ *                       eventTypes:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             eventType:
+ *                               type: string
+ *                               description: Type of the event
+ *                             eventTypeRelationships:
+ *                               type: object
+ *                               properties:
+ *                                 eventId:
+ *                                   type: integer
+ *                                   description: Unique identifier of the event
+ *                                 eventTypeId:
+ *                                   type: integer
+ *                                   description: Unique identifier of the event type
  */
