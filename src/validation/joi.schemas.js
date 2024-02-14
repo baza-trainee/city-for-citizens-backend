@@ -75,14 +75,15 @@ const eventSchema = Joi.object({
     .regex(/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
     .required(),
   description: Joi.string().required(),
-  url: Joi.string()
+  eventUrl: Joi.string()
     .uri({
       scheme: ['http', 'https'],
     })
+    .allow('')
     .optional(),
   city: Joi.string().required(),
   street: Joi.string().required(),
-  notes: Joi.string().optional(),
+  notes: Joi.string().allow('').optional(),
   coordinates: Joi.string()
     .regex(
       /^(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?[0-8]\d((\.)|\.\d{1,20})?)|(0*?4?[1-9]|0)((\.)|\.0{1,20})?),\s*(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?\d\d((\.)|\.\d{1,20})?)|(0*?1[0-7]\d((\.)|\.\d{1,20})?)|(0*?1[0-7][0-9]|[1-8]\d|90)((\.)|\.0{1,20})?)$/

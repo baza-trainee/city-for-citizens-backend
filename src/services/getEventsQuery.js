@@ -27,8 +27,6 @@ const getEventsQuery = (query, tableAttributes = {}) => {
         },
       }),
     },
-    offset: query.offset,
-    limit: query.limit,
     include: [
       {
         model: db.EventAddress,

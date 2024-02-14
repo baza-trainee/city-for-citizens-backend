@@ -2,34 +2,42 @@ const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 const { getEventsQuery } = require('../../services/getEventsQuery');
 
-// const { API_URL, DIR_IMAGES } = process.env;
-
 const getEventsController = ctrlWrapper(async (req, res) => {
   const { query } = req;
 
-  const page = parseInt(query.page) || 1;
-  const limit = parseInt(query.limit) || 10;
-  query.limit = limit;
-  query.offset = (page - 1) * limit;
-
   const eventsQuery = getEventsQuery(query);
 
-  const { count, rows: events } = await db.Events.findAndCountAll(eventsQuery);
-  // add full path to images
-  // events.forEach(event => {
-  //   if (event.eventImage) {
-  //     const imagePath = DIR_IMAGES.replace('public/', '');
-  //     event.eventImage = `${API_URL}/${imagePath}/${event.eventImage}`;
-  //   }
-  // });
+  const events = await db.Events.findAll(eventsQuery);
 
-  const pageInfo = {
-    totalItems: count,
-    totalPages: Math.ceil(count / limit),
-    currentPage: page,
-  };
-
-  res.status(200).json({ events, ...pageInfo });
+  res.status(200).json({ events });
 });
 
-module.exports = getEventsController;
+// getEventsById
+const getEventsById = ctrlWrapper(async (req, res) => {
+  const { id } = req.params;
+
+  const event1 = await db.Events.findOne({
+    where: { id },
+    include: [{ model: db.EventAddress }, { model: db.EventTypes }],
+  });
+
+  if (!event1) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  const event2 = await db.Events.findOne({
+    where: {
+      idIdentifier: event1.idIdentifier,
+      id: { [db.Sequelize.Op.ne]: event1.id },
+    },
+    include: [{ model: db.EventAddress }, { model: db.EventTypes }],
+  });
+
+  if (!event2) {
+    return res.status(404).json({ message: 'Second event not found' });
+  }
+
+  return res.json([event1, event2]);
+});
+
+module.exports = { getEventsController, getEventsById };
