@@ -114,7 +114,12 @@ const contactsSchema = Joi.object({
     'string.email': 'Email is not valid',
     'any.required': 'Missing required field email',
   }),
-  phone: Joi.string()
+  firstPhone: Joi.string()
+    .regex(/^\+?[0-9]{12}$/)
+    .messages({ 'string.pattern.base': `Phone number must have 12 digits.` })
+    .required(),
+
+  secondPhone: Joi.string()
     .regex(/^\+?[0-9]{12}$/)
     .messages({ 'string.pattern.base': `Phone number must have 12 digits.` })
     .required(),
