@@ -34,7 +34,13 @@ const searchEventsService = async (query, page = 1, limit = 10) => {
     limit,
   });
 
-  return { totalPages: count, page, limit, events: rows };
+  return {
+    limit,
+    currentPage: page,
+    totalPages: Math.ceil(count / limit),
+    totalEvents: count,
+    events: rows,
+  };
 };
 
 module.exports = searchEventsService;
