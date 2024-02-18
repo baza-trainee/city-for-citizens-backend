@@ -32,7 +32,9 @@ const updateDocumentController = ctrlWrapper(async (req, res, next) => {
 
   await updateDocument(existingDocument, updatedFields);
 
-  res.status(200).json({ message: 'Document updated successfully' });
+  res
+    .status(200)
+    .json({ status: 'success', message: 'Document updated successfully' });
 });
 
 const handleFileUpload = async (req, existingDocument) => {

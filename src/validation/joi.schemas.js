@@ -147,7 +147,7 @@ const partnerSchema = Joi.object({
     }),
 });
 const documentSchema = Joi.object({
-  name: Joi.string().trim().min(2).max(255).required().messages({
+  name: Joi.string().trim().min(2).max(255).optional().messages({
     'string.base': 'Name must be a string',
     'string.empty': 'Name is required',
     'string.min': 'Name should have a minimum length of {#limit}',
