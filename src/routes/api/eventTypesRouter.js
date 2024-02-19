@@ -2,14 +2,17 @@ const express = require('express');
 
 const router = express.Router();
 
-const getEventTypesController = require('../../controllers/eventTypes/getEventTypesController');
+const {
+  getEventTypesController,
+  getEventTypesControllerByIdIdentifier,
+} = require('../../controllers/eventTypes/getEventTypesController');
 const createEventTypesController = require('../../controllers/eventTypes/createEventTypesController');
 const updateEventTypesController = require('../../controllers/eventTypes/updateEventTypesController');
 const deleteEventTypesController = require('../../controllers/eventTypes/deleteEventTypesController');
 const authMiddleware = require('../../middlewares/authMiddleware');
 const validate = require('../../validation/validation');
 const {
-  checkIdSchema,
+  checkIdIdentifierSchema,
   eventTypeSchema,
 } = require('../../validation/joi.schemas');
 const ValidationTypes = require('../../validation/validationTypes');
@@ -24,16 +27,20 @@ router
   );
 
 router
-  .route('/:id')
+  .route('/:idIdentifier')
+  .get(
+    validate(checkIdIdentifierSchema, ValidationTypes.PARAMS),
+    getEventTypesControllerByIdIdentifier
+  )
   .patch(
     authMiddleware,
-    validate(checkIdSchema, ValidationTypes.PARAMS),
+    validate(checkIdIdentifierSchema, ValidationTypes.PARAMS),
     validate(eventTypeSchema, ValidationTypes.BODY),
     updateEventTypesController
   )
   .delete(
     authMiddleware,
-    validate(checkIdSchema, ValidationTypes.PARAMS),
+    validate(checkIdIdentifierSchema, ValidationTypes.PARAMS),
     deleteEventTypesController
   );
 
@@ -41,172 +48,225 @@ module.exports = router;
 
 /**
  * @swagger
- * /eventTypes:
- *   get:
- *     summary: Get event types
- *     tags: [EventTypes]
- *     description: Get a list of event types based on query parameters
- *     parameters:
- *       - in: query
- *         name: eventType
- *         schema:
- *           type: string
- *         description: Optional. Filter by event type.
- *       - in: query
- *         name: locale
- *         schema:
- *           type: string
- *         description: Optional. Filter by locale.
- *     responses:
- *       '200':
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 eventTypes:
- *                   type: array
- *                   items:
- *                     $ref: '#/definitions/EventType'
- *       '404':
- *         description: Not found
- *         content: {}
- *
+ * /event-types:
  *   post:
- *     summary: Create event type
+ *     summary: Create event types
  *     tags: [EventTypes]
- *     description: Create a new event type
- *     security:
- *       - Bearer: []
+ *     description: Create event types for both Ukrainian and English locales
  *     requestBody:
- *       description: Event type data
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/definitions/EventTypeInput'
+ *             type: object
+ *             properties:
+ *               eventTypeUkr:
+ *                 type: string
+ *               eventTypeEng:
+ *                 type: string
  *     responses:
  *       '201':
- *         description: Event type created successfully
+ *         description: Event types created successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 newEventType:
- *                   $ref: '#/definitions/EventType'
- *       '400':
- *         description: Bad request (invalid request body)
- *         content: {}
- *       '401':
- *         description: Not authorized
- *         content: {}
- *
- * /eventTypes/{id}:
- *   patch:
- *     summary: Update event type
- *     tags: [EventTypes]
- *     description: Update event type by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     security:
- *       - Bearer: []
- *     requestBody:
- *       description: Update event type data
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/definitions/EventTypeInput'
- *     responses:
- *       '200':
- *         description: Successfully updated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
+ *                 status:
  *                   type: string
- *                   description: Successfully updated
- *       '400':
- *         description: Bad request (invalid request body)
- *         content: {}
- *       '401':
- *         description: Not authorized
- *         content: {}
- *       '404':
- *         description: Not found
- *         content: {}
- *
- *   delete:
- *     summary: Delete event type
- *     tags: [EventTypes]
- *     description: Delete event type by id
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     security:
- *       - Bearer: []
- *     responses:
- *       '200':
- *         description: Successfully deleted
+ *                 newEventTypeUkr:
+ *                   $ref: '#/components/schemas/EventType'
+ *                 newEventTypeEng:
+ *                   $ref: '#/components/schemas/EventType'
+ *       default:
+ *         description: Unexpected error
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Successfully deleted
- *       '400':
- *         description: Bad request (invalid request body)
- *         content: {}
- *       '401':
- *         description: Not authorized
- *         content: {}
- *       '404':
- *         description: Not found
- *         content: {}
+ *               $ref: '#/components/schemas/Error'
  */
 
 /**
  * @swagger
- * definitions:
- *   EventType:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *         description: Event type id
- *       eventType:
- *         type: string
+ * /event-types:
+ *   get:
+ *     summary: Get event types
+ *     tags: [EventTypes]
+ *     description: Get event types by id, idIdentifier, eventType, or locale
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         description: Comma-separated list of event type IDs
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: idIdentifier
+ *         description: Event type identifier
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: eventType
  *         description: Event type name
- *       locale:
- *         type: string
- *         description: Event type locale
- *     required:
- *       - eventType
- *       - locale
- *
- *   EventTypeInput:
- *     type: object
- *     properties:
- *       eventType:
- *         type: string
- *         description: Event type name
- *       locale:
- *         type: string
- *         description: Event type locale
- *     required:
- *       - eventType
- *       - locale
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: locale
+ *         description: Locale code (e.g., 'uk_UA', 'en_US')
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/EventType'
+ *       default:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
+ * /event-types/{idIdentifier}:
+ *   get:
+ *     summary: Get event types by ID identifier
+ *     tags: [EventTypes]
+ *     description: Get event types by the specified ID identifier
+ *     parameters:
+ *       - in: path
+ *         name: idIdentifier
+ *         description: Event type identifier
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/EventType'
+ *       default:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
+ * /event-types/{idIdentifier}:
+ *   put:
+ *     summary: Update event types by ID identifier
+ *     tags: [EventTypes]
+ *     description: Update event types by the specified ID identifier
+ *     parameters:
+ *       - in: path
+ *         name: idIdentifier
+ *         description: Event type identifier
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               eventTypeUkr:
+ *                 type: string
+ *               eventTypeEng:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Event types updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       default:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
+ * /event-types/{idIdentifier}:
+ *   delete:
+ *     summary: Delete event types by ID identifier
+ *     tags: [EventTypes]
+ *     description: Delete event types by the specified ID identifier
+ *     parameters:
+ *       - in: path
+ *         name: idIdentifier
+ *         description: Event type identifier
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Event types deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       '400':
+ *         description: Some events are associated with the specified eventType
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 eventIds:
+ *                   type: array
+ *                   items:
+ *                     type: integer
+ *       default:
+ *         description: Unexpected error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     EventType:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         idIdentifier:
+ *           type: string
+ *         eventType:
+ *           type: string
+ *         locale:
+ *           type: string
  */

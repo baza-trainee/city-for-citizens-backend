@@ -47,6 +47,10 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      idIdentifier: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
       eventType: {
         type: Sequelize.STRING(255),
         allowNull: false,

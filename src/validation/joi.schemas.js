@@ -101,6 +101,9 @@ const checkIdSchema = Joi.object({
     required: 'id is required',
   }),
 });
+const checkIdIdentifierSchema = Joi.object({
+  idIdentifier: Joi.string().uuid({ version: 'uuidv4' }).required(),
+});
 
 const userIdSchema = Joi.object({
   userId: Joi.number().required().messages({
@@ -158,14 +161,20 @@ const documentSchema = Joi.object({
 });
 
 const eventTypeSchema = Joi.object({
-  eventType: Joi.string()
+  eventTypeUkr: Joi.string()
     .regex(/^[\p{L}\d\s.]+$/u)
     .required()
     .messages({
       'string.pattern.base': 'eventType must be a string with only letters',
       'any.required': 'eventType is required',
     }),
-  locale: Joi.string(),
+  eventTypeEng: Joi.string()
+    .regex(/^[\p{L}\d\s.]+$/u)
+    .required()
+    .messages({
+      'string.pattern.base': 'eventType must be a string with only letters',
+      'any.required': 'eventType is required',
+    }),
 });
 
 const passwordChangeSchema = Joi.object({
@@ -195,6 +204,7 @@ module.exports = {
   eventImageSchema,
   eventSchema,
   checkIdSchema,
+  checkIdIdentifierSchema,
   userIdSchema,
   contactsSchema,
   partnerSchema,
