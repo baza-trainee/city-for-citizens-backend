@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../../middlewares/authMiddleware');
-const uploadDocumentsPdf = require('../../middlewares/uploadDocumentsPdf');
+const uploadDocuments = require('../../middlewares/uploadDocuments');
 const validate = require('../../validation/validation');
 const ValidationTypes = require('../../validation/validationTypes');
 const { documentSchema } = require('../../validation/joi.schemas');
@@ -15,7 +15,7 @@ router
   .get(getDocumentsController)
   .patch(
     authMiddleware,
-    uploadDocumentsPdf.single('file'),
+    uploadDocuments.single('file'),
     validate(documentSchema, ValidationTypes.BODY),
     updateDocumentsController
   );
