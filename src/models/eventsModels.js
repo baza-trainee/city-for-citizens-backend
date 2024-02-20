@@ -62,12 +62,6 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       timestamps: false,
-      indexes: [
-        {
-          unique: true,
-          fields: ['eventType', 'locale'],
-        },
-      ],
     }
   );
 

@@ -3,7 +3,7 @@ const db = require('../../models');
 const { Op } = require('sequelize');
 
 const getEventTypesController = ctrlWrapper(async (req, res) => {
-  const { id, idIdentifier, eventType, locale } = req.query;
+  const { id, idIdentifier, eventType, locale, limit, page } = req.query;
   const whereCondition = {};
 
   if (id) {
@@ -22,10 +22,15 @@ const getEventTypesController = ctrlWrapper(async (req, res) => {
   if (locale) {
     whereCondition.locale = locale;
   }
+  const pageNumber = parseInt(page) || 1;
+  const limitNumber = parseInt(limit) || 10;
+  const offset = (pageNumber - 1) * limitNumber;
 
   const eventTypes = await db.EventTypes.findAll({
     order: [['id', 'DESC']],
     where: whereCondition,
+    limit: limitNumber,
+    offset: offset,
   });
 
   res.status(200).json({ eventTypes });
