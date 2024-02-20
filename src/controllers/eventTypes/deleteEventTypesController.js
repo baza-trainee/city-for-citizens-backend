@@ -1,22 +1,35 @@
 const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 
-const deleteEventTypesController = ctrlWrapper(async (req, res) => {
-  const { id } = req.params;
+const deleteEventTypesControllerByIdIdentifier = ctrlWrapper(
+  async (req, res) => {
+    const { idIdentifier } = req.params;
 
-  if (!id) {
-    return res.status(400).json({ message: 'Invalid event type ID' });
+    const events = await db.Events.findAll({
+      where: {
+        idIdentifier: idIdentifier,
+      },
+      attributes: ['id'],
+    });
+
+    if (events.length > 0) {
+      const eventIds = events.map(event => event.id);
+      return res.status(400).json({
+        error: 'Some events are associated with the specified eventType',
+        eventIds,
+      });
+    }
+
+    await db.EventTypes.destroy({
+      where: {
+        idIdentifier: idIdentifier,
+      },
+    });
+
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Event types deleted successfully' });
   }
+);
 
-  const existingEventType = await db.EventTypes.findByPk(id);
-
-  if (!existingEventType) {
-    return res.status(404).json({ message: 'Event type not found' });
-  }
-
-  await db.EventTypes.destroy({ where: { id } });
-
-  res.status(200).json({ message: 'Successfully deleted' });
-});
-
-module.exports = deleteEventTypesController;
+module.exports = deleteEventTypesControllerByIdIdentifier;

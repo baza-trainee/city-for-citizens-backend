@@ -30,7 +30,7 @@ async function createDb() {
 
       const answer = await new Promise(resolve => {
         rl.question(
-          'Database already exists. Do you want to delete and recreate it? (yes/no): ',
+          '\x1b[31mDatabase already exists. Do you want to delete and recreate it? (yes/no): \x1b[0m',
           resolve
         );
       });

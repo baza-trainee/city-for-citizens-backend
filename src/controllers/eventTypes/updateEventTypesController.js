@@ -2,22 +2,34 @@ const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 
 const updateEventTypesController = ctrlWrapper(async (req, res) => {
-  const { id } = req.params;
-  const { eventType } = req.body;
+  const { idIdentifier } = req.params;
+  const { eventTypeUkr, eventTypeEng } = req.body;
 
-  if (!id) {
-    return res.status(400).json({ message: 'Invalid event type ID' });
+  const existingEventTypes = await db.EventTypes.findAll({
+    where: {
+      idIdentifier: idIdentifier,
+    },
+  });
+
+  if (existingEventTypes.length === 0) {
+    return res
+      .status(404)
+      .json({ error: 'No event types found for the provided idIdentifier' });
   }
 
-  const existingEventType = await db.EventTypes.findByPk(id);
+  await Promise.all(
+    existingEventTypes.map(async eventType => {
+      if (eventType.locale === 'uk_UA') {
+        await eventType.update({ eventType: eventTypeUkr });
+      } else if (eventType.locale === 'en_US') {
+        await eventType.update({ eventType: eventTypeEng });
+      }
+    })
+  );
 
-  if (!existingEventType) {
-    return res.status(404).json({ message: 'Event type not found' });
-  }
-
-  await db.EventTypes.update({ eventType }, { where: { id } });
-
-  res.status(200).json({ message: 'Successfully updated' });
+  res
+    .status(200)
+    .json({ status: 'success', message: 'Event types updated successfully' });
 });
 
 module.exports = updateEventTypesController;

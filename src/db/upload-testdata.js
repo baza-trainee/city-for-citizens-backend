@@ -12,98 +12,122 @@ const {
 
 const eventTypes = [
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440000',
     eventType: 'Квітковий фестиваль',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440001',
     eventType: 'Гастрономічний фестиваль',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440002',
     eventType: 'Фестиваль звичаєвої культури',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440003',
     eventType: 'Культурний фестиваль',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440004',
     eventType: 'Музичний фестиваль',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440005',
     eventType: 'Літературний захід',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440006',
     eventType: 'Музичний захід',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440007',
     eventType: 'Спортивний захід',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440008',
     eventType: 'Патріотичні заходи',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440009',
     eventType: 'Святкова подія',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440010',
     eventType: 'День міста',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440011',
     eventType: 'Виставка',
     locale: 'uk_UA',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440000',
     eventType: 'Flower Festival',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440001',
     eventType: 'Gastronomic Festival',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440002',
     eventType: 'Festival of Folk Culture',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440003',
     eventType: 'Cultural Festival',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440004',
     eventType: 'Music Festival',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440005',
     eventType: 'Literary Event',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440006',
     eventType: 'Music Event',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440007',
     eventType: 'Sports Event',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440008',
     eventType: 'Patriotic Events',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440009',
     eventType: 'Festive Event',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440010',
     eventType: 'City Day',
     locale: 'en_US',
   },
   {
+    idIdentifier: '550e8400-e29c-41d4-a716-446655440011',
     eventType: 'Exhibition',
     locale: 'en_US',
   },

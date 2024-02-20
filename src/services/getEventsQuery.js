@@ -12,6 +12,7 @@ const getEventsQuery = (query, tableAttributes = {}) => {
   const eventTypesQuery = query.eventType ? query.eventType.split(',') : [];
 
   return {
+    order: [['id', 'DESC']],
     attributes: tableAttributes.eventsAttributes || null,
 
     where: {

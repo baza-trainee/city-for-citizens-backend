@@ -47,6 +47,10 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      idIdentifier: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
       eventType: {
         type: Sequelize.STRING(255),
         allowNull: false,
@@ -58,12 +62,6 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       timestamps: false,
-      indexes: [
-        {
-          unique: true,
-          fields: ['eventType', 'locale'],
-        },
-      ],
     }
   );
 
