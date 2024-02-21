@@ -26,14 +26,22 @@ const getEventTypesController = ctrlWrapper(async (req, res) => {
   const limitNumber = parseInt(limit) || 10;
   const offset = (pageNumber - 1) * limitNumber;
 
-  const eventTypes = await db.EventTypes.findAll({
+  const { count, rows } = await db.EventTypes.findAndCountAll({
     order: [['id', 'DESC']],
     where: whereCondition,
     limit: limitNumber,
     offset: offset,
   });
 
-  res.status(200).json({ eventTypes });
+  const totalPages = Math.ceil(count / limitNumber);
+
+  res.status(200).json({
+    eventTypes: rows,
+    limit: limitNumber,
+    page: pageNumber,
+    totalPages: totalPages,
+    totalEventTypes: count,
+  });
 });
 
 const getEventTypesControllerByIdIdentifier = ctrlWrapper(async (req, res) => {
