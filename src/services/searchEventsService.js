@@ -5,6 +5,7 @@ const searchEventsService = async (query, page = 1, limit = 10) => {
   const offset = (page - 1) * limit;
 
   const { count, rows } = await db.Events.findAndCountAll({
+    order: [['id', 'DESC']],
     where: {
       [Op.or]: [
         { eventTitle: { [Op.like]: `%${query}%` } },

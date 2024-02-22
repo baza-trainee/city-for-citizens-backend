@@ -8,19 +8,17 @@ const searchEventsController = require('../../controllers/events/searchEventsCon
 const createEventController = require('../../controllers/events/createEventController');
 const updateEventController = require('../../controllers/events/updateEventController');
 const deleteEventController = require('../../controllers/events/deleteEventController');
+const analyticsEventsController = require('../../controllers/events/analyticsEventsController');
 const authMiddleware = require('../../middlewares/authMiddleware');
 const validate = require('../../validation/validation');
 const { eventSchema, checkIdSchema } = require('../../validation/joi.schemas');
 const ValidationTypes = require('../../validation/validationTypes');
 
-router
-  .route('/')
-  .get(getEventsController)
-  .post(
-    authMiddleware,
-    validate(eventSchema, ValidationTypes.BODY),
-    createEventController
-  );
+router.route('/').get(getEventsController).post(
+  authMiddleware,
+  validate(eventSchema, ValidationTypes.BODY),
+  createEventController
+);
 
 router
   .route('/:id')
@@ -37,6 +35,7 @@ router
     deleteEventController
   );
 router.route('/search/find').get(searchEventsController);
+router.route('/statistics/analytics').get(analyticsEventsController);
 
 module.exports = router;
 
@@ -618,4 +617,41 @@ module.exports = router;
  *                                 eventTypeId:
  *                                   type: integer
  *                                   description: Unique identifier of the event type
+ */
+
+/**
+ * @swagger
+ * events/statistics/analytics:
+ *   get:
+ *     summary: Get event statistics by type
+ *     description: Retrieves the count of events for each type along with the event type
+ *     tags: [Events]
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the operation
+ *                 code:
+ *                   type: integer
+ *                   description: The response code
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       eventTypeId:
+ *                         type: integer
+ *                         description: The event type ID
+ *                       eventType:
+ *                         type: string
+ *                         description: The event type
+ *                       count:
+ *                         type: integer
+ *                         description: The count of events for this type
  */
