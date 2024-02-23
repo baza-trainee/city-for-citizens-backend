@@ -89,7 +89,15 @@ const eventSchema = Joi.object({
       /^(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?[0-8]\d((\.)|\.\d{1,20})?)|(0*?4?[1-9]|0)((\.)|\.0{1,20})?),\s*(\+|-)?((\d((\.)|\.\d{1,20})?)|(0*?\d\d((\.)|\.\d{1,20})?)|(0*?1[0-7]\d((\.)|\.\d{1,20})?)|(0*?1[0-7][0-9]|[1-8]\d|90)((\.)|\.0{1,20})?)$/
     )
     .required(),
-  eventType: Joi.string().required(),
+  eventTypeId: Joi.string()
+    .pattern(/^\d+(,\d+)*$/, 'Invalid event type IDs format')
+    .custom((value, helpers) => {
+      const ids = value.split(',').map(id => parseInt(id.trim(), 10));
+      if (ids.some(isNaN) || ids.some(id => id <= 0)) {
+        return helpers.error('Invalid event type IDs');
+      }
+      return value;
+    }, 'validateEventTypeId'),
   eventImage: Joi.string()
     .pattern(/^event\d{10,20}\.jpg$/)
     .required(),

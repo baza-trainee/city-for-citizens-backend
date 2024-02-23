@@ -31,6 +31,7 @@ Events.belongsTo(EventAddress, { foreignKey: 'eventAddressId' });
 Tokens.belongsTo(Users, { foreignKey: 'userId' });
 // Events.belongsTo(EventAddress, { onDelete: 'CASCADE' });
 // EventAddress.hasMany(Events, { onDelete: 'CASCADE' });
+EventTypeRelationships.belongsTo(EventTypes, { foreignKey: 'eventTypeId' });
 
 async function assertDatabaseConnectionOk() {
   console.log(`Checking MySQL database connection...`);

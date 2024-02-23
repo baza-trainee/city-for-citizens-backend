@@ -91,8 +91,8 @@ module.exports = router;
  * /event-types:
  *   get:
  *     summary: Get event types
+ *     description: Retrieves event types based on filters like ID, identifier, type, and locale
  *     tags: [EventTypes]
- *     description: Get event types by id, idIdentifier, eventType, or locale
  *     parameters:
  *       - in: query
  *         name: id
@@ -114,15 +114,44 @@ module.exports = router;
  *         description: Locale code (e.g., 'uk_UA', 'en_US')
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: page
+ *         description: The page number for pagination
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         description: The maximum number of items per page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 10
  *     responses:
- *       '200':
- *         description: OK
+ *       200:
+ *         description: Successful response
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/EventType'
+ *               type: object
+ *               properties:
+ *                 eventTypes:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/EventType'
+ *                 limit:
+ *                   type: integer
+ *                   description: The maximum number of items per page
+ *                 page:
+ *                   type: integer
+ *                   description: The current page number
+ *                 totalPages:
+ *                   type: integer
+ *                   description: The total number of pages
+ *                 totalEventTypes:
+ *                   type: integer
+ *                   description: The total number of event types
  *       default:
  *         description: Unexpected error
  *         content:

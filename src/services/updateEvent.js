@@ -14,7 +14,7 @@ const updateEvent = async requestData => {
     street,
     notes,
     coordinates,
-    eventType,
+    eventTypeId,
     eventImage,
   } = requestData;
 
@@ -28,41 +28,21 @@ const updateEvent = async requestData => {
     throw new Error('Event not found');
   }
 
-  const eventTypesArray = eventType.split(',');
-
-  const existingEventTypes = await Promise.all(
-    eventTypesArray.map(async eventTypeName => {
-      const existingEventType = await db.EventTypes.findOne({
-        where: {
-          eventType: eventTypeName,
-          locale,
-        },
-      });
-
-      if (existingEventType) {
-        return existingEventType;
-      } else {
-        return db.EventTypes.create({
-          eventType: eventTypeName,
-          locale,
-        });
-      }
-    })
-  );
-
-  const eventAddress = await db.EventAddress.update(
-    {
-      city,
-      street,
-      notes,
-      coordinates,
-    },
-    {
-      where: {
-        id: existingEvent.eventAddressId,
+  if (city || street || notes || coordinates) {
+    const eventAddress = await db.EventAddress.update(
+      {
+        city,
+        street,
+        notes,
+        coordinates,
       },
-    }
-  );
+      {
+        where: {
+          id: existingEvent.eventAddressId,
+        },
+      }
+    );
+  }
 
   const updatedEventData = {
     idIdentifier,
@@ -76,18 +56,16 @@ const updateEvent = async requestData => {
 
   const updatedEvent = await existingEvent.update(updatedEventData);
 
+  const eventTypeIdArray = eventTypeId.split(',');
+
+  await db.EventTypeRelationships.destroy({ where: { eventId: id } });
+
   await Promise.all(
-    existingEventTypes.map(async eventType => {
-      await db.EventTypeRelationships.update(
-        {
-          eventTypeId: eventType.id,
-        },
-        {
-          where: {
-            eventId: updatedEvent.id,
-          },
-        }
-      );
+    eventTypeIdArray.map(async eventTypeID => {
+      await db.EventTypeRelationships.create({
+        eventId: updatedEvent.id,
+        eventTypeId: eventTypeID,
+      });
     })
   );
 
