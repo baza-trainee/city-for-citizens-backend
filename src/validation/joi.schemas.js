@@ -152,6 +152,7 @@ const partnerSchema = Joi.object({
     }),
   image: Joi.string()
     .regex(/^[a-zA-Z0-9_-]+\.[a-zA-Z]{2,4}$/)
+    .allow('')
     .messages({
       'string.pattern.base': 'Image should be a valid filename with extension',
       'any.required': 'Image is required',

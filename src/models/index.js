@@ -11,9 +11,16 @@ const dbPort = process.env.DB_PORT;
 const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   port: dbPort,
   dialect: 'mysql',
+  dialectOptions: {
+    timezone: '-02:00', // for reading from database
+    typeCast: function (field, next) {
+      if (field.type === 'datetime') {
+        return new Date(field.string());
+      }
+      return next();
+    },
+  },
   host: dbHost,
-  useUTC: false, // for reading from database
-  timezone: '+00:00', // for writing to database
   logging: false,
 });
 
@@ -29,9 +36,7 @@ Events.belongsToMany(EventTypes, { through: EventTypeRelationships });
 EventTypes.belongsToMany(Events, { through: EventTypeRelationships });
 Events.belongsTo(EventAddress, { foreignKey: 'eventAddressId' });
 Tokens.belongsTo(Users, { foreignKey: 'userId' });
-// Events.belongsTo(EventAddress, { onDelete: 'CASCADE' });
-// EventAddress.hasMany(Events, { onDelete: 'CASCADE' });
-EventTypeRelationships.belongsTo(EventTypes, { foreignKey: 'eventTypeId' });
+// EventTypeRelationships.belongsTo(EventTypes, { foreignKey: 'eventTypeId' });
 
 async function assertDatabaseConnectionOk() {
   console.log(`Checking MySQL database connection...`);

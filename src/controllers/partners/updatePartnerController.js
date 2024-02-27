@@ -31,7 +31,12 @@ const updatePartnerController = ctrlWrapper(async (req, res, next) => {
         DIR_PARTNERS_IMAGES,
         existingPartner.image
       );
-      await fs.unlink(previousImagePath);
+
+      try {
+        await fs.unlink(previousImagePath);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     await existingPartner.update({
