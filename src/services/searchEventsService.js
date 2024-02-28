@@ -9,30 +9,23 @@ const searchEventsService = async (query, page = 1, limit = 10) => {
     where: {
       [Op.or]: [
         { eventTitle: { [Op.like]: `%${query}%` } },
-        {
-          dateTime: {
-            [Op.substring]: query,
-          },
-        },
-        { '$eventAddress.city$': { [Op.like]: `%${query}%` } },
-        { '$eventTypes.eventType$': { [Op.like]: `%${query}%` } },
+        { dateTime: { [Op.substring]: query } },
       ],
     },
-    subQuery: false,
     include: [
-      {
-        model: db.EventAddress,
-        as: 'eventAddress',
-        attributes: ['city'],
-      },
+      { model: db.EventAddress, attributes: ['city'] },
       {
         model: db.EventTypes,
-        as: 'eventTypes',
+        through: {
+          model: db.EventTypeRelationships,
+          attributes: [],
+        },
         attributes: ['eventType'],
       },
     ],
     offset,
     limit,
+    distinct: true,
   });
 
   return {

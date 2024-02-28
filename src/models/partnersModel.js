@@ -28,6 +28,22 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       timestamps: true,
+      // Define hooks
+      // hooks: {
+      //   // Hook before creating a new record
+      //   beforeCreate: (instance, options) => {
+      //     const currentDate = new Date();
+      //     currentDate.setUTCHours(currentDate.getUTCHours() + 2); // Add 2 hours
+      //     instance.createdAt = currentDate;
+      //     instance.updatedAt = currentDate;
+      //   },
+      //   // Hook before updating an existing record
+      //   beforeUpdate: (instance, options) => {
+      //     const currentDate = new Date();
+      //     currentDate.setUTCHours(currentDate.getUTCHours() + 2); // Add 2 hours
+      //     instance.updatedAt = currentDate;
+      //   },
+      // },
     }
   );
 

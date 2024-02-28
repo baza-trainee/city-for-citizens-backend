@@ -4,7 +4,10 @@ const db = require('../../models');
 const getPartnersController = ctrlWrapper(async (req, res) => {
   const { id } = req.query;
 
-  const partners = await db.Partners.findAll({ where: { ...(id && { id }) } });
+  const partners = await db.Partners.findAll({
+    order: [['id', 'DESC']],
+    where: { ...(id && { id }) },
+  });
 
   if (partners.length === 0) {
     return res.status(404).json({ message: 'Not found' });
