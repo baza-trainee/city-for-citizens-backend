@@ -12,7 +12,7 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   port: dbPort,
   dialect: 'mysql',
   dialectOptions: {
-    timezone: '-02:00', // for reading from database
+    timezone: '-00:00', // for reading from database
     typeCast: function (field, next) {
       if (field.type === 'datetime') {
         return new Date(field.string());
