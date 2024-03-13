@@ -1,7 +1,27 @@
 module.exports = (sequelize, Sequelize) => {
   const EventTypeRelationships = sequelize.define(
     'eventTypeRelationships',
-    {},
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      eventTypeId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'eventTypes',
+          key: 'id',
+        },
+      },
+      eventId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'events',
+          key: 'id',
+        },
+      },
+    },
     {
       timestamps: false,
     }
