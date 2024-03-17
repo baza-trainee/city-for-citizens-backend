@@ -171,14 +171,14 @@ const documentSchema = Joi.object({
 
 const eventTypeSchema = Joi.object({
   eventTypeUkr: Joi.string()
-    .regex(/^[\p{L}\d\s.]+$/u)
+    .regex(/^[\p{L}\d\s.'’]+$/u)
     .required()
     .messages({
       'string.pattern.base': 'eventType must be a string with only letters',
       'any.required': 'eventType is required',
     }),
   eventTypeEng: Joi.string()
-    .regex(/^[\p{L}\d\s.]+$/u)
+    .regex(/^[\p{L}\d\s.'’]+$/u)
     .required()
     .messages({
       'string.pattern.base': 'eventType must be a string with only letters',
