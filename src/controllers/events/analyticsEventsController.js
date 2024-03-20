@@ -2,12 +2,15 @@ const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const db = require('../../models');
 
 const analyticsEventsController = ctrlWrapper(async (req, res) => {
+  const { locale } = req.query;
+
   const eventsCountByType = await db.EventTypeRelationships.findAll({
     attributes: ['eventTypeId', [db.sequelize.fn('COUNT', '*'), 'count']],
     include: [
       {
         model: db.EventTypes,
         attributes: ['eventType'],
+        ...(locale && { where: { locale: locale } }),
       },
     ],
     group: ['eventTypeId'],
