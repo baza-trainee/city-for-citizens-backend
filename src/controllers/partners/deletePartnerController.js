@@ -17,12 +17,12 @@ const deletePartnerController = ctrlWrapper(async (req, res) => {
 
   const fileName = existingPartner.image;
 
+  await existingPartner.destroy();
+
   if (fileName) {
     const filePath = path.join(DIR_PARTNERS_IMAGES, fileName);
     await fs.unlink(filePath);
   }
-
-  await existingPartner.destroy();
 
   res.status(200).json({ message: 'Partner successfully deleted' });
 });
